@@ -1,0 +1,22 @@
+[
+   
+          {
+            "title":"Java Developer" ,
+            "company":"Tech Mahindra",
+            "minSalary": 10,
+            "maxSalary": 20,
+            "category": "Software Development",
+            "minExperience": 0,
+            "maxExperience": 2,
+            "location": "India, Bengaluru",
+            "address": "SEZ Unit-1,Hub-1,No.6.1,6.2,94.1,2nd floor,3rd Floor and4th floor partial, Karle infra SEZ,100ft Kempapura Main Road,Nagavara,Bengaluru, BANGALORE, Karnataka, India",
+            "skills": "java,nodejs,mongodb", 
+            "responsibilities": ["Build next-generation web applications with a focus on the client side.Redesign UI’s, implement new UI’s, and pick up Java as necessary.Explore and design dynamic and compelling consumer experiences.Design and build scalable framework for web applications"],
+            "description": "Programming languages and technologies such as SQL, Oracle PL/SQL, Java/Java EE, C# .NET,  HTML, JavaScript, Gradle, CSS • Database tools like SQL Query Tool, PL/SQL Developer (or similar), ",
+            "jobRole": "Back End Developer",
+            "maxPositions": 12,
+            "jobType": "Full Time",
+            "rating": 0
+          }
+
+]
