@@ -4,8 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "build": "npm i"
+    "dev": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
