@@ -29,6 +29,10 @@ import userRouter from "./routes/user.routes.js";
 import jobRouter from "./routes/job.routes.js";
 import applicationRouter from "./routes/application.routes.js";
 
+app.get("/", (req, res) => {
+  res.send("Job Portal Web!");
+});
+
 app.use("/api/v1", userRouter);
 app.use("/api/v1", jobRouter);
 app.use("/api/v1", applicationRouter);
