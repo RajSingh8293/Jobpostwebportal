@@ -172,8 +172,6 @@ export const fetchApplicants = (id) => async (dispatch) => {
             {
                 withCredentials: true
             },)
-        console.log("applicants :", data);
-
         if (data.success) {
             dispatch(sucessForGetApplicants(data?.applicants))
         }
@@ -192,8 +190,6 @@ export const fetchMySingleJob = (id) => async (dispatch) => {
             {
                 withCredentials: true
             },)
-        console.log("applicants :", data);
-
         if (data.success) {
             dispatch(sucessForGetSMyingleJob(data?.job))
         }

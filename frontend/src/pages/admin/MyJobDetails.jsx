@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 
 import Layout from "@/components/comp/Layout"
 import {
@@ -31,10 +30,9 @@ const MyJobDetails = () => {
 
     useEffect(() => {
         dispatch(fetchMySingleJob(id))
+    }, [dispatch, id])
 
-    }, [])
 
-    // backColor
     return (
         <Layout>
             <section className="min-h-screen">

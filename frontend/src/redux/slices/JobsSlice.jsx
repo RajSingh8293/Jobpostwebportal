@@ -116,7 +116,6 @@ export const fetchJobs = (city, category, searchKeyword = "") => async (dispatch
         })
 
         dispatch(sucessForJobs(response?.data?.jobs))
-        // dispatch(clearAllError())
     } catch (error) {
         console.log(error);
         dispatch(failedForJobs(error?.response?.data?.message))
@@ -134,9 +133,7 @@ export const fetchSingleJob = (id) => async (dispatch) => {
         )
 
         if (data.success) {
-
             dispatch(sucessSingleJob(data?.job))
-            // dispatch(clearAllError())
         }
     } catch (error) {
         console.log(error);
@@ -144,7 +141,6 @@ export const fetchSingleJob = (id) => async (dispatch) => {
     }
 
 }
-
 
 // user applied jobs 
 export const getMyAppliedJobs = () => {

@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
+import { fetchMySingleJob } from '@/redux/slices/myJobsSlice'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
-// import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 
@@ -10,10 +12,12 @@ import { toast } from 'react-toastify'
 const UpdateCompanyLogo = ({ open, setOpen, job }) => {
     const [imagePreview, setImagePreview] = useState()
     const [loading, setLoading] = useState()
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
 
     const [companyLogo, setCompanyLogo] = useState({
-        logo: null
+        logo: job?.logo?.url || null
     })
 
     const onchangeFileHandler = (e) => {
@@ -21,21 +25,15 @@ const UpdateCompanyLogo = ({ open, setOpen, job }) => {
         setImagePreview(URL.createObjectURL(e.target.files[0]));
     }
 
-
-
     let axiosConfig = {
         withCredentials: true,
     }
-
 
     const updateHandler = async (e) => {
         e.preventDefault()
         try {
             const formData = new FormData()
             formData.append("logo", companyLogo.logo);
-            console.log(formData);
-            // setOpen(false)
-
             setLoading(true)
             const { data } = await axios.put(
                 `${import.meta.env.VITE_REACT_APP_API_BASE_UR}/job/update/image/${job?._id}`,
@@ -44,9 +42,9 @@ const UpdateCompanyLogo = ({ open, setOpen, job }) => {
             )
             console.log(data?.user);
             if (data.success) {
-                // dispatch(setUser(data?.user))
                 toast.success(data.message)
-                // navigate(`/my-job-details/${job?._id}`)
+                dispatch(fetchMySingleJob())
+                navigate(`/my-job-details/${job?._id}`)
             }
             setLoading(false)
         } catch (error) {
@@ -57,12 +55,6 @@ const UpdateCompanyLogo = ({ open, setOpen, job }) => {
         }
     }
 
-
-    useEffect(() => {
-        setCompanyLogo({
-            logo: job?.logo?.url || null
-        })
-    }, [job])
 
     return (
         <Dialog open={open} onClose={setOpen} className="relative z-10" >

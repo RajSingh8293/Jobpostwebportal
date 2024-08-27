@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -7,14 +6,14 @@ import { useNavigate } from "react-router-dom"
 
 const UserProtectedRoute = ({ children }) => {
     const navigate = useNavigate()
-    const { user } = useSelector((state) => state.auth)
+    const { user, isAuthenticated } = useSelector((state) => state.auth)
 
 
     useEffect(() => {
-        if (user === null) {
+        if (user === null || !isAuthenticated) {
             navigate('/login')
         }
-    }, [])
+    }, [isAuthenticated, navigate, user])
     return (
         <>
             {children}

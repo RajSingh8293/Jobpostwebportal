@@ -141,7 +141,7 @@ export const userSlice = createSlice({
             state.error = state.payload
         },
         clearAllErrors: (state, action) => {
-            state.user = action.payload.user;
+            state.user = action.payload;
             state.error = null
         },
     },
@@ -172,7 +172,7 @@ export const registerUser = (userData) => {
             if (data.success) {
                 dispatch(registerSuccess(data));
                 toast.success(data.message)
-                dispatch(clearAllErrors());
+                // dispatch(clearAllErrors());
             }
 
         } catch (error) {
@@ -261,5 +261,10 @@ export const updateUser = (userData) => {
 
         }
     };
+}
+
+
+export const clearAllUserErrors = () => async (dispatch) => {
+    dispatch(clearAllErrors())
 }
 

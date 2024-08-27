@@ -26,7 +26,7 @@ const AppliedJobs = () => {
                         <div className="p-2">
                             {applyJobApplications?.length > 0 ?
                                 <div className="">
-                                    <h1 className="text-2xl pb-5">All Jobs Applied by <span className="capitalize font-semibold">Rajesh</span>  </h1>
+                                    <h1 className="text-2xl pb-5">All Jobs Applied by <span className="capitalize font-semibold">{user?.username}</span>  </h1>
 
                                     <div className="relative w-full overflow-x-auto">
                                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
