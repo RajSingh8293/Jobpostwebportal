@@ -33,6 +33,8 @@ const MyJobDetails = () => {
         dispatch(fetchMySingleJob(id))
 
     }, [])
+
+    // backColor
     return (
         <Layout>
             <section className="min-h-screen">
@@ -133,7 +135,7 @@ const MyJobDetails = () => {
                                     <p className="flex gap-5"> Web Developer – PHP</p>
                                 </div>
                                 <span className="absolute top-2 right-2 border p-1.5 rounded-lg hover:bg-[#EF3A3A]">
-                                    <CiHeart className="text-[red] hover:text-white overflow-hidden font-bold " backColor={"red"} fontSize={20} />
+                                    <CiHeart className="text-[red] hover:text-white overflow-hidden font-bold " fontSize={20} />
                                 </span>
                             </div>
                         </div>
