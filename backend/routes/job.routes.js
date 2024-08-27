@@ -7,12 +7,12 @@ import {
   getJobById,
   getRecruiterJob,
   updateLogoJob,
-} from "../controllers/job.controllers.js";
+} from "../src/controllers/job.controllers.js";
 import {
   isAuthenticated,
   recruiterAuth,
-} from "../middleware/auth.middleware.js";
-import { upload } from "../middleware/file.middleware.js";
+} from "../src/middleware/auth.middleware.js";
+import { upload } from "../src/middleware/file.middleware.js";
 
 const router = Router();
 
