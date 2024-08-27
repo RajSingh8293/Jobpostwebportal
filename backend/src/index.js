@@ -13,7 +13,7 @@ const app = express();
 const port = process.env.PORT || 5500;
 
 const corsOptions = {
-  origin: "https://jobporatlaweb.vercel.app",
+  origin: ["https://jobporatlaweb.vercel.app"],
   // origin: "http://localhost:5174",
   credentials: true,
 };
