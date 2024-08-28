@@ -8,6 +8,7 @@ import TestimonialCarousal from "@/components/comp/TestimonialCarousal"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchJobs } from "@/redux/slices/JobsSlice"
+import Spinner from "@/components/comp/Spinner"
 
 
 
@@ -51,7 +52,7 @@ const Home = () => {
         },
     ]
     const dispatch = useDispatch()
-    const { jobs } = useSelector((state) => state.jobs)
+    const { jobs, loading } = useSelector((state) => state.jobs)
     // const { user } = useSelector((state) => state.auth)
     console.log("jobs :", jobs);
 
@@ -64,16 +65,19 @@ const Home = () => {
             <Hero />
             <CategoryCarousal category={categoryCard} title="Jobs Categories" />
 
-            <section className="px-10 py-24">
-                <h1 className="text-3xl font-bold mb-4 text-center">Recent Jobs</h1>
-                <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
-                    {
-                        jobs?.slice(0, 6).map((job, index) =>
-                            <JobCard job={job} key={index} />
-                        )
-                    }
-                </div>
-            </section>
+            {loading ?
+                <Spinner />
+                :
+                <section className="px-10 py-24">
+                    <h1 className="text-3xl font-bold mb-4 text-center">Recent Jobs</h1>
+                    <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+                        {
+                            jobs?.slice(0, 6).map((job, index) =>
+                                <JobCard job={job} key={index} />
+                            )
+                        }
+                    </div>
+                </section>}
 
             <section className="">
                 <div>

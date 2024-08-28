@@ -11,9 +11,9 @@ import {
   registerUser,
   updateProfile,
   updateProfileImage,
-} from "../src/controllers/user.controllers.js";
-import { isAuthenticated } from "../src/middleware/auth.middleware.js";
-import { upload } from "../src/middleware/file.middleware.js";
+} from "../controllers/user.controllers.js";
+import { isAuthenticated } from "../middleware/auth.middleware.js";
+import { upload } from "../middleware/file.middleware.js";
 
 const router = Router();
 

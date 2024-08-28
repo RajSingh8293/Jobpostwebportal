@@ -2,14 +2,14 @@ import express, { Router } from "express";
 import {
   isAuthenticated,
   recruiterAuth,
-} from "../src/middleware/auth.middleware.js";
+} from "../middleware/auth.middleware.js";
 import {
   applyForJob,
   getAllApplicantesAndSingleJob,
   getAppliedMyJobs,
   updatetStatus,
-} from "../src/controllers/application.controllers.js";
-import { upload } from "../src/middleware/file.middleware.js";
+} from "../controllers/application.controllers.js";
+import { upload } from "../middleware/file.middleware.js";
 
 const router = Router();
 // applicant

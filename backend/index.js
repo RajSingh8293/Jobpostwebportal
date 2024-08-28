@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import connectDb from "../db/conn.js";
+import connectDb from "./db/conn.js";
 
 // import dotenv from "dotenv";
 // dotenv.config();
@@ -13,8 +13,8 @@ const app = express();
 const port = process.env.PORT || 5500;
 
 const corsOptions = {
-  origin: ["https://jobporatlaweb.vercel.app"],
-  // origin: "http://localhost:5174",
+  // origin: ["https://jobporatlaweb.vercel.app"],
+  origin: "http://localhost:5173",
   credentials: true,
 };
 
@@ -26,9 +26,9 @@ app.use(cookieParser());
 app.use(express.static("public"));
 
 // routes
-import userRouter from "../routes/user.routes.js";
-import jobRouter from "../routes/job.routes.js";
-import applicationRouter from "../routes/application.routes.js";
+import userRouter from "./routes/user.routes.js";
+import jobRouter from "./routes/job.routes.js";
+import applicationRouter from "./routes/application.routes.js";
 
 app.get("/", (req, res) => {
   res.send("Job Portal Web!");

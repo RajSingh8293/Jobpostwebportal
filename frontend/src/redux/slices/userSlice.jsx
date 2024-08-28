@@ -105,6 +105,7 @@ export const userSlice = createSlice({
             state.message = null;
         },
 
+
         updateProfileImageRequest: (state, action) => {
             state.loading = true
             state.isAuthenticated = false
@@ -124,9 +125,6 @@ export const userSlice = createSlice({
             state.error = action.payload;
             state.message = null;
         },
-
-
-
 
 
         userLogoutSuccess: (state, action) => {
