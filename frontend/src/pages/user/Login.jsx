@@ -2,23 +2,14 @@
 /* eslint-disable no-unused-vars */
 import Layout from "@/components/comp/Layout"
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { NavLink, useNavigate } from "react-router-dom"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import { toast } from "react-toastify"
 import axios from "axios"
 import { clearAllUserErrors, loginUser } from "@/redux/slices/userSlice"
-import Spinner from "@/components/comp/Spinner"
 
 const Login = () => {
     const navigate = useNavigate()
@@ -45,25 +36,7 @@ const Login = () => {
     const submitHandler = async (e) => {
         e.preventDefault()
         dispatch(loginUser(userData))
-        // try {
-        //     dispatch(setLoading(true))
 
-        //     const { data } = await axios.post(
-        //         `${import.meta.env.VITE_REACT_APP_API_BASE_UR}/user/login`,
-        //         userData,
-        //         axiosConfig,
-        //     )
-        //     console.log(data);
-        //     if (data.success) {
-        //         dispatch(setUser(data.user))
-        //         navigate('/')
-        //         toast.success(data.message)
-        //     }
-        //     dispatch(setLoading(false))
-        // } catch (error) {
-        //     console.log(error);
-        //     dispatch(setLoading(false))
-        // }
     }
 
     useEffect(() => {
@@ -78,8 +51,9 @@ const Login = () => {
 
         if (isAuthenticated) {
             navigate('/profile')
+            toast.success(message)
         }
-    }, [dispatch, error, navigate, isAuthenticated, user])
+    }, [dispatch, error, navigate, message, isAuthenticated, user])
 
     return (
         <Layout>

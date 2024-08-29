@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Spinner from "@/components/comp/Spinner";
+import { profileUser } from "@/redux/slices/userSlice";
 
 
 const Profile = () => {
@@ -22,12 +23,12 @@ const Profile = () => {
 
     const { user, loading, isAuthenticated } = useSelector((state) => state.auth)
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            navigate('/profile')
-        }
+    // useEffect(() => {
+    //     if (isAuthenticated) {
+    //         navigate('/profile')
+    //     }
 
-    }, [dispatch, navigate, isAuthenticated])
+    // }, [dispatch, navigate, isAuthenticated])
     return (
         <Layout>
             {loading ? <Spinner /> :

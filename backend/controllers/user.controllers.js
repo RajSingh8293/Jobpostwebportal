@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
-import User from "../models/user.model.js";
 import { deleteOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
+import User from "../models/user.model.js";
 
 // register user
 export const registerUser = async (req, res) => {
@@ -149,6 +149,8 @@ export const logoutUser = async (req, res) => {
 export const getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user?._id).select("-password");
+    console.log("user :", user);
+
     if (!user) {
       return res.status(400).json({
         success: false,

@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom"
 
 const UserProtectedRoute = ({ children }) => {
     const navigate = useNavigate()
-    const { user, isAuthenticated } = useSelector((state) => state.auth)
+    const { user } = useSelector((state) => state.auth)
 
 
     useEffect(() => {
-        if (user === null || !isAuthenticated) {
+        if (user === null) {
             navigate('/login')
         }
-    }, [isAuthenticated, navigate, user])
+    }, [navigate, user])
     return (
         <>
             {children}

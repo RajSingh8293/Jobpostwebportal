@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import connectDb from "./db/conn.js";
 
 // import dotenv from "dotenv";
 // dotenv.config();
@@ -29,10 +28,11 @@ app.use(express.static("public"));
 import userRouter from "./routes/user.routes.js";
 import jobRouter from "./routes/job.routes.js";
 import applicationRouter from "./routes/application.routes.js";
+import connectDb from "./db/conn.js";
 
-app.get("/", (req, res) => {
-  res.send("Job Portal Web!");
-});
+// app.get("/", (req, res) => {
+//   res.send("Job Portal Web!");
+// });
 
 app.use("/api/v1", userRouter);
 app.use("/api/v1", jobRouter);

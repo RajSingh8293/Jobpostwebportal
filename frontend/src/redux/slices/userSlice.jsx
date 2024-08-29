@@ -187,13 +187,11 @@ export const loginUser = (userData) => {
             const { data } = await axios.post(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/user/login`, userData, axiosConfig);
             if (data.success) {
                 dispatch(loginSuccess(data));
-                toast.success(data.message)
-                // dispatch(clearAllErrors());
+                // toast.success(data.message)
             }
         } catch (error) {
             console.log(error);
             dispatch(loginFailed(error?.response?.data?.message))
-
         }
     };
 }
@@ -220,6 +218,8 @@ export const profileUser = () => {
         dispatch(profileRequest())
         try {
             const { data } = await axios.get(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/user/me`, axiosConfig);
+            console.log("profileUser :", data);
+
             if (data.success) {
                 dispatch(profileSuccess(data?.user));
             }

@@ -82,7 +82,7 @@ const Navbar = () => {
 
                                                     {user && user?.profileImage?.url ? < AvatarImage className="w-8 h-8 rounded-full" src={user?.profileImage?.url} />
                                                         :
-                                                        <AvatarFallback className="bg-blue-600 capitalize font-bold text-xl">{user?.username?.slice(0, 1)}</AvatarFallback>
+                                                        <AvatarFallback className="bg-orange-500 capitalize font-bold text-xl">{user?.username?.slice(0, 1)}</AvatarFallback>
                                                     }
                                                 </Avatar>
 
@@ -121,7 +121,7 @@ const Navbar = () => {
 
                                                         {user && user?.profileImage?.url ? < AvatarImage className="w-8 h-8 rounded-full" src={user?.profileImage?.url} />
                                                             :
-                                                            <AvatarFallback className="bg-blue-600 capitalize font-bold text-xl">{user?.username.slice(0, 1)}</AvatarFallback>
+                                                            <AvatarFallback className="bg-orange-500 capitalize font-bold text-xl">{user?.username.slice(0, 1)}</AvatarFallback>
                                                         }
                                                     </Avatar>
 
@@ -155,11 +155,11 @@ const Navbar = () => {
                                     }
                                 </div>
 
-                                {/* toggel menu  */}
+                                {/* toggle menu  */}
 
                                 {
                                     showMenu &&
-                                    <ul className="absolute w-full h-[100vh] bg-gray-800 z-20 top-10 right-0 flex flex-col  justify-center items-center gap-5">
+                                    <ul className="absolute w-full h-[100vh] bg-gray-800 z-20 top-16 right-0 flex flex-col  justify-center items-center gap-5">
                                         {menuLinks?.map((data, index) =>
                                             <li key={index}>
                                                 <NavLink to={data?.link}>

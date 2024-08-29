@@ -35,7 +35,7 @@ router.put(
 router.delete("/user/delete/me", isAuthenticated, deleteProfile);
 
 // admin
-router.get("/user/all", isAuthenticated, allUsers);
+router.get("/user/all", allUsers);
 router.delete("/user/admin/delete/:id", isAuthenticated, deleteUserAccount);
 router.get("/user/admin/get/:id", isAuthenticated, getUserAccountById);
 
