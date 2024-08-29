@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { backendApi } from "@/constant/BackendApi";
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -165,7 +166,7 @@ export const registerUser = (userData) => {
     return async (dispatch) => {
         dispatch(registerRequest())
         try {
-            const { data } = await axios.post(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/user/register`, userData, axiosConfig);
+            const { data } = await axios.post(`${backendApi}/user/register`, userData, axiosConfig);
 
             if (data.success) {
                 dispatch(registerSuccess(data));
@@ -184,7 +185,7 @@ export const loginUser = (userData) => {
     return async (dispatch) => {
         dispatch(loginRequest())
         try {
-            const { data } = await axios.post(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/user/login`, userData, axiosConfig);
+            const { data } = await axios.post(`${backendApi}/user/login`, userData, axiosConfig);
             if (data.success) {
                 dispatch(loginSuccess(data));
                 // toast.success(data.message)
@@ -199,7 +200,7 @@ export const loginUser = (userData) => {
 export const logoutUser = () => {
     return async (dispatch) => {
         try {
-            const { data } = await axios.get(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/user/logout`, axiosConfig);
+            const { data } = await axios.get(`${backendApi}/user/logout`, axiosConfig);
             if (data.success) {
                 dispatch(userLogoutSuccess(data));
                 toast.success(data?.message)
@@ -217,7 +218,7 @@ export const profileUser = () => {
     return async (dispatch) => {
         dispatch(profileRequest())
         try {
-            const { data } = await axios.get(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/user/me`, axiosConfig);
+            const { data } = await axios.get(`${backendApi}/user/me`, axiosConfig);
             console.log("profileUser :", data);
 
             if (data.success) {
@@ -233,7 +234,7 @@ export const updateProfileImage = (image) => {
     return async (dispatch) => {
         dispatch(updateProfileImageRequest())
         try {
-            const { data } = await axios.put(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/user/update/profile-image`, image, axiosConfig);
+            const { data } = await axios.put(`${backendApi}/user/update/profile-image`, image, axiosConfig);
             if (data.success) {
                 dispatch(updateProfileImageSuccess(data));
                 toast.success(data.message)
@@ -248,7 +249,7 @@ export const updateUser = (userData) => {
     return async (dispatch) => {
         dispatch(updateProfileRequest())
         try {
-            const { data } = await axios.put(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/user/update/me`, userData, axiosConfig);
+            const { data } = await axios.put(`${backendApi}/user/update/me`, userData, axiosConfig);
             if (data.success) {
                 dispatch(updateProfileSuccess(data));
                 toast.success(data?.message)

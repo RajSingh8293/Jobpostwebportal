@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 // /* eslint-disable react-refresh/only-export-components */
+import { backendApi } from "@/constant/BackendApi";
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -131,7 +132,7 @@ export const createNewJob = (jobData) =>
         try {
             dispatch(requestForCreateJob())
             const { data } = await axios.post(
-                `${import.meta.env.VITE_REACT_APP_API_BASE_UR}/job/create`,
+                `${backendApi}/job/create`,
                 jobData,
                 axiosConfig,
             )
@@ -150,7 +151,7 @@ export const createNewJob = (jobData) =>
 export const fetchAllMyJobs = () => async (dispatch) => {
     try {
         dispatch(requestForMyJobs())
-        const { data } = await axios.get(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/job/get/recruiter/jobs`, axiosConfig)
+        const { data } = await axios.get(`${backendApi}/job/get/recruiter/jobs`, axiosConfig)
         console.log("my jobs :", data);
 
         if (data.success) {
@@ -168,7 +169,7 @@ export const fetchAllMyJobs = () => async (dispatch) => {
 export const fetchApplicants = (id) => async (dispatch) => {
     try {
         dispatch(requestForGetApplicants())
-        const { data } = await axios.get(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/application/get/${id}`,
+        const { data } = await axios.get(`${backendApi}/application/get/${id}`,
             {
                 withCredentials: true
             },)
@@ -186,7 +187,7 @@ export const fetchApplicants = (id) => async (dispatch) => {
 export const fetchMySingleJob = (id) => async (dispatch) => {
     try {
         dispatch(requestForGetMySingleJob())
-        const { data } = await axios.get(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/job/get/${id}`,
+        const { data } = await axios.get(`${backendApi}/job/get/${id}`,
             {
                 withCredentials: true
             },)
@@ -211,7 +212,7 @@ export const createApplication = (userData, jobId) =>
     async (dispatch) => {
         try {
             dispatch(requestForPostApplication())
-            const { data } = await axios.post(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/application/apply/${jobId}`, userData, axiosConfigMultipart);
+            const { data } = await axios.post(`${backendApi}/application/apply/${jobId}`, userData, axiosConfigMultipart);
             console.log("data :", data);
 
             if (data.success) {
