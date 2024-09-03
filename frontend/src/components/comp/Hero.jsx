@@ -2,8 +2,8 @@
 
 const Hero = () => {
     return (
-        <section className="py-16">
-            <div className="w-[100%] relative ">
+        <section className="">
+            <div className="w-full relative ">
                 <img className='opacity-70 hero_image w-[100%] lg:h-[600px]' src="https://images.pexels.com/photos/927451/pexels-photo-927451.jpeg?auto=compress&cs=tinysrgb&w=2000" alt='' />
                 <div className="lg:px-10 w-[100%] h-[100%] absolute top-0 left-0 flex flex-col justify-center items-center">
                     <div>

@@ -1,5 +1,31 @@
 import Job from "../models/job.model.js";
+import fs from "fs";
 import { deleteOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
+// import data from "../data.json";
+
+// export const createMultipleJobs = async (req, res) => {
+//   try {
+//     const jobs = await Job.insertMany(data);
+//     if (!jobs) {
+//       res.status(400).json({
+//         message: "Jobs not created",
+//         success: false,
+//       });
+//       return;
+//     }
+//     res.status(201).json({
+//       message: "Jobs is created succefully",
+//       success: true,
+//       jobs,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Something wrong with creating multiple jobs",
+//       error,
+//     });
+//   }
+// };
 
 // create job user
 export const createJob = async (req, res) => {

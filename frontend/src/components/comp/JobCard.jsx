@@ -35,7 +35,10 @@ const JobCard = ({ job }) => {
                                 {job?.company}
                             </Link>
                         </p>
-                        <p className=" flex items-center gap-3"><span><FaRegMoneyBillAlt /></span><span>{job?.minSalary} - {job?.maxSalary}LPA</span></p>
+                        <p className=" flex items-center gap-3"><span><FaRegMoneyBillAlt /></span>
+                            <span>
+                                {job?.maxSalary || job?.minSalary ? `${job?.maxSalary} - ${job?.minSalary}LPA` : "Not disclosed"}
+                            </span></p>
                     </div>
 
                     <div className="flex justify-between items-center">

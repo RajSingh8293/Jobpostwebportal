@@ -1,22 +1,62 @@
-[
-   
-          {
-            "title":"Java Developer" ,
-            "company":"Tech Mahindra",
-            "minSalary": 10,
-            "maxSalary": 20,
-            "category": "Software Development",
-            "minExperience": 0,
-            "maxExperience": 2,
-            "location": "India, Bengaluru",
-            "address": "SEZ Unit-1,Hub-1,No.6.1,6.2,94.1,2nd floor,3rd Floor and4th floor partial, Karle infra SEZ,100ft Kempapura Main Road,Nagavara,Bengaluru, BANGALORE, Karnataka, India",
-            "skills": "java,nodejs,mongodb", 
-            "responsibilities": ["Build next-generation web applications with a focus on the client side.Redesign UI’s, implement new UI’s, and pick up Java as necessary.Explore and design dynamic and compelling consumer experiences.Design and build scalable framework for web applications"],
-            "description": "Programming languages and technologies such as SQL, Oracle PL/SQL, Java/Java EE, C# .NET,  HTML, JavaScript, Gradle, CSS • Database tools like SQL Query Tool, PL/SQL Developer (or similar), ",
-            "jobRole": "Back End Developer",
-            "maxPositions": 12,
-            "jobType": "Full Time",
-            "rating": 0
-          }
-
+  [
+  {
+        "title":"Java Developer" ,
+        "company":"Tech Mahindra",
+        "applications": [],
+        "minSalary": 10,
+        "maxSalary": 20,
+        "category": "Software Development",
+        "minExperience": 0,
+        "maxExperience": 2,
+        "location": "Bengaluru",
+        "address": "SEZ Unit-1,Hub-1,No.6.1,6.2,94.1,2nd floor,3rd Floor and4th floor partial, Karle infra SEZ,100ft Kempapura Main Road,Nagavara,Bengaluru, BANGALORE, Karnataka, India",
+        "skills": "java,nodejs,mongodb", 
+        "responsibilities": ["Build next-generation web applications with a focus on the client side.Redesign UI’s, implement new UI’s, and pick up Java as necessary.Explore and design dynamic and compelling consumer experiences.Design and build scalable framework for web applications"],
+        "description": "Programming languages and technologies such as SQL, Oracle PL/SQL, Java/Java EE, C# .NET,  HTML, JavaScript, Gradle, CSS • Database tools like SQL Query Tool, PL/SQL Developer (or similar), ",
+        "jobRole": "Back End Developer",
+        "maxPositions": 12,
+        "jobType": "Full Time",
+        "rating": 0,
+        "logo": {
+          "public_id" : "",
+          "url" : ""
+        },
+        "createdAt" : "2024-08-26T10:30:47.090Z",
+        "createdBy" :  "66cc589de3386997b4bfaa23",
+        "updatedAt" : "2024-08-27T12:14:41.701Z",
+        "__v": 1,
+         "_id" :  "66cc5957e3386997b4bfaa64"
+      }  ,
+   {
+        "title":"Nurse for take care of clients" ,
+        "company":"MS Hospital",
+        "applications": [],
+        "minSalary": 1,
+        "maxSalary": 10,
+        "category": "Madical",
+        "minExperience": 0,
+        "maxExperience": 2,
+        "location": "Fridabad",
+        "address": "SEZ Unit-1,Hub-1,No.6.1,6.2,94.1,2nd floor,3rd Floor and4th floor partial, Karle infra SEZ,100ft Kempapura Main Road,Nagavara,Bengaluru, BANGALORE, Karnataka, India",
+        "skills": "", 
+        "responsibilities": ["Build next-generation web applications with a focus on the client side.Redesign UI’s, implement new UI’s, and pick up Java as necessary.Explore and design dynamic and compelling consumer experiences.Design and build scalable framework for web applications"],
+        "description": "Programming languages and technologies such Database tools like SQL Query Tool, PL/SQL Developer (or similar), ",
+        "jobRole": "Back End Developer",
+        "maxPositions": 12,
+        "jobType": "Full Time",
+        "rating": 0,
+        "logo": {
+          "public_id" : "",
+          "url" : ""
+        },
+        "createdAt" : "2024-08-26T10:30:47.090Z",
+        "createdBy" :  "66cc589de3386997b4bfaa23",
+        "updatedAt" : "2024-08-27T12:14:41.701Z",
+        "__v": 1,
+         "_id" :  "66cc5957e3386997b4bfaa64"
+      }    
+      
 ]
+
+
+

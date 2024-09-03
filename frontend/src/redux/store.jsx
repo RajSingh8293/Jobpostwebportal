@@ -9,6 +9,5 @@ export const store = configureStore({
         auth: userSlice,
         jobs: JobsSlice,
         myjobs: myJobsSlice,
-
     },
 })

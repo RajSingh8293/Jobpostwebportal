@@ -44,10 +44,10 @@ const Login = () => {
             top: 0,
             behavior: "smooth",
         });
-        if (error) {
-            toast.error(error)
-            dispatch(clearAllUserErrors())
-        }
+        // if (error) {
+        //     toast.error(error)
+        //     dispatch(clearAllUserErrors())
+        // }
 
         if (isAuthenticated) {
             navigate('/profile')

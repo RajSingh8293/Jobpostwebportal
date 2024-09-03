@@ -28,7 +28,7 @@ router.get(
   recruiterAuth,
   getRecruiterJob
 );
-router.delete("/job/delete/:id", recruiterAuth, deleteJobById);
+router.delete("/job/delete/:id", isAuthenticated, recruiterAuth, deleteJobById);
 router.put(
   "/job/update/image/:id",
   upload.single("logo"),

@@ -8,7 +8,7 @@ const Sidebar = () => {
     const { user } = useSelector((state) => state.auth)
 
 
-    const logoutHandler = async () => {
+    const logoutHandler = () => {
         dispatch(logoutUser())
     }
 
@@ -18,8 +18,8 @@ const Sidebar = () => {
                 user?.role === "recruiter"
                     ?
 
-                    <div className="sticky flex flex-col gap-2 p-4 text-sm border-r border-indigo-100 top-12">
-                        <Link to='/' className="pl-3 mb-4 text-2xl font-semibold">Home</Link>
+                    <div className="sticky flex flex-col gap-2 pr-4 text-sm border-r border-indigo-100 top-12">
+                        <Link to='/myjobs' className="pl-3 mb-4 text-2xl font-semibold">Dashboard</Link>
 
                         <Link to="/profile" className="flex items-center px-3 py-2.5 font-bold bg-white  text-indigo-900 border rounded-full">
                             Profile
@@ -29,12 +29,13 @@ const Sidebar = () => {
                             My Jobs
                         </Link>
                         <button
+                            onClick={logoutHandler}
                             className="flex items-center px-3 py-2.5 font-semibold hover:text-indigo-900 hover:border hover:rounded-full ">
                             Logout
                         </button>
                     </div>
                     :
-                    <div className="sticky flex flex-col gap-2 p-4 text-sm border-r border-indigo-100 top-12">
+                    <div className="sticky flex flex-col gap-2 pr-4 text-sm border-r border-indigo-100 top-12">
                         <Link to='/' className="pl-3 mb-4 text-2xl font-semibold">Home</Link>
                         <Link to="/profile" className="flex items-center px-3 py-2.5 font-bold bg-white  text-indigo-900 border rounded-full">
                             Profile

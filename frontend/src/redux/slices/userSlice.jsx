@@ -237,7 +237,7 @@ export const updateProfileImage = (image) => {
             const { data } = await axios.put(`${backendApi}/user/update/profile-image`, image, axiosConfig);
             if (data.success) {
                 dispatch(updateProfileImageSuccess(data));
-                toast.success(data.message)
+                // toast.success(data.message)
             }
         } catch (error) {
             dispatch(updateProfileImageFailed(error?.response?.data?.message))
@@ -252,7 +252,6 @@ export const updateUser = (userData) => {
             const { data } = await axios.put(`${backendApi}/user/update/me`, userData, axiosConfig);
             if (data.success) {
                 dispatch(updateProfileSuccess(data));
-                toast.success(data?.message)
             }
         } catch (error) {
             console.log(error);

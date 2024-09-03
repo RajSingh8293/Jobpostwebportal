@@ -112,9 +112,7 @@ export const fetchJobs = (city, category, searchKeyword = "") => async (dispatch
             queryParams.push(`category=${category}`);
         }
         link += queryParams.join("&")
-        const response = await axios.get(link, {
-            withCredentials: true
-        })
+        const response = await axios.get(link)
 
         dispatch(sucessForJobs(response?.data?.jobs))
     } catch (error) {

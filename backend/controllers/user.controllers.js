@@ -5,7 +5,7 @@ import User from "../models/user.model.js";
 
 // register user
 export const registerUser = async (req, res) => {
-  const { username, email, password, location, role } = req.body;
+  const { username, email, password, location, phone, role } = req.body;
   try {
     if (!username) {
       return res.status(422).json({ message: "Username is required !" });
@@ -36,6 +36,7 @@ export const registerUser = async (req, res) => {
       email,
       password: hashPassword,
       role,
+      phone,
       location,
     });
 
@@ -45,7 +46,7 @@ export const registerUser = async (req, res) => {
       expiresIn: "1d",
     });
 
-    console.log("user :", user);
+    // console.log("user :", user);
 
     const { password: pass, ...rest } = user._doc; //  hide passwrod
     const options = {
@@ -174,7 +175,7 @@ export const getProfile = async (req, res) => {
 
 // update profile
 export const updateProfile = async (req, res) => {
-  const { username, email, location } = req.body;
+  const { username, email, location, phone } = req.body;
   try {
     const user = await User.findById(req.user?._id).select("-password");
     if (!user) {
@@ -191,6 +192,7 @@ export const updateProfile = async (req, res) => {
           username,
           email,
           location,
+          phone,
         },
       },
       { new: true }

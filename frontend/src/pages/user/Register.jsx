@@ -29,6 +29,7 @@ const Register = () => {
         email: '',
         password: '',
         location: '',
+        phone: '',
         role: '',
     })
 
@@ -42,15 +43,17 @@ const Register = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault()
+        console.log("userData :", userData);
+
         dispatch(registerUser(userData))
     }
 
 
     useEffect(() => {
-        if (error) {
-            toast.error(error)
-            dispatch(clearAllUserErrors())
-        }
+        // if (error) {
+        //     toast.error(error)
+        //     dispatch(clearAllUserErrors())
+        // }
         if (isAuthenticated) {
             navigate('/profile')
         }
@@ -99,6 +102,10 @@ const Register = () => {
                             <div className="mb-3">
                                 <Label>Location</Label>
                                 <Input type="text" placeholder="Your location" name="location" className="outline-none" value={userData.location} onChange={onchangeHandler} />
+                            </div>
+                            <div className="mb-3">
+                                <Label>Phone</Label>
+                                <Input type="tel" placeholder="+91 8978 787 789" name="phone" className="outline-none" value={userData.phone} onChange={onchangeHandler} />
                             </div>
                             <div className="mb-3">
                                 <Button type="submit" onClick={submitHandler}>Submit</Button>

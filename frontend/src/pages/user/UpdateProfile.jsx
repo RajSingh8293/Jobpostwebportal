@@ -19,6 +19,7 @@ const UpdateProfile = ({ open, setOpen }) => {
         username: user?.username,
         email: user?.email,
         location: user?.location,
+        phone: user?.phone,
     })
 
 
@@ -108,6 +109,16 @@ const UpdateProfile = ({ open, setOpen }) => {
                                         onChange={onchangeHandler}
                                         value={userData?.location}
                                         name='location'
+                                        className='w-full col-span-3 border outline-none py-1 px-2'
+                                    />
+                                </div>
+                                <div className="mt-4 grid grid-cols-4 gap-3">
+                                    <label className="" >Phone</label>
+                                    <input
+                                        type="number"
+                                        onChange={onchangeHandler}
+                                        value={userData?.phone}
+                                        name='phone'
                                         className='w-full col-span-3 border outline-none py-1 px-2'
                                     />
                                 </div>

@@ -47,11 +47,7 @@ const jobSchema = new mongoose.Schema(
       type: String,
     },
     skills: [{ type: String }],
-    responsibilities: [
-      {
-        type: String,
-      },
-    ],
+    responsibilities: [{ type: String }],
     description: {
       type: String,
     },

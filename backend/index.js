@@ -11,15 +11,19 @@ import "dotenv/config";
 const app = express();
 const port = process.env.PORT || 5500;
 
+// app.use(cors());
 const corsOptions = {
-  // origin: ["https://jobporatlaweb.vercel.app"],
-  origin: "http://localhost:5173",
+  origin: [
+    "https://jobpostwebportal-frontedn.vercel.app",
+    // "http://localhost:5173",
+  ],
   credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 };
+app.use(cors(corsOptions));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static("public"));
@@ -30,9 +34,9 @@ import jobRouter from "./routes/job.routes.js";
 import applicationRouter from "./routes/application.routes.js";
 import connectDb from "./db/conn.js";
 
-// app.get("/", (req, res) => {
-//   res.send("Job Portal Web!");
-// });
+app.get("/", (req, res) => {
+  res.send("Job Portal Web!");
+});
 
 app.use("/api/v1", userRouter);
 app.use("/api/v1", jobRouter);

@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button"
 import { toast } from "react-toastify"
 import axios from "axios"
 import { fetchAllMyJobs } from "@/redux/slices/myJobsSlice"
+import { backendApi } from "@/constant/BackendApi"
 
 const MyJobs = () => {
     const dispatch = useDispatch()
@@ -33,7 +34,7 @@ const MyJobs = () => {
 
     const deleteMyJob = async (jobId) => {
         try {
-            const { data } = await axios.delete(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/job/delete/${jobId}`,
+            const { data } = await axios.delete(`${backendApi}/job/delete/${jobId}`,
                 {
                     withCredentials: true,
                 },
@@ -48,19 +49,23 @@ const MyJobs = () => {
     }
 
     useEffect(() => {
+        window.scroll({
+            top: 0,
+            behavior: "smooth",
+        });
         dispatch(fetchAllMyJobs())
     }, [dispatch])
 
     return (
         <Layout>
-            <section className="min-h-screen px-10 py-16">
+            <section className="min-h-screen lg:px-10 px-5 py-24">
                 <div className="bg-white w-full flex flex-col gap-5  md:flex-row text-[#161931]">
                     <aside className="hidden py-4 md:w-1/3 lg:w-1/4 md:block">
                         <Sidebar />
                     </aside>
                     <main className=" w-full min-h-screen">
-                        <div className=" p-2 md:p-4">
-                            <div className="border-b px-6  sm:rounded-lg">
+                        <div className="w-full  md:p-4">
+                            <div className="border-b  sm:rounded-lg">
                                 <div className="pb-5 flex justify-between items-center">
                                     <h2 className="text-2xl font-bold sm:text-xl">My All Jobs</h2>
                                     <Button><Link to='/create-job'>Create New Job</Link></Button>
@@ -105,7 +110,7 @@ const MyJobs = () => {
                                                     <TableCell className="text-right">
                                                         {job?.applications.length}
                                                     </TableCell>
-                                                    <TableCell>{job?.createdAt
+                                                    <TableCell className="">{job?.createdAt
                                                         .split("T")[0]}</TableCell>
                                                     <TableCell className="text-right">
                                                         <Popover>

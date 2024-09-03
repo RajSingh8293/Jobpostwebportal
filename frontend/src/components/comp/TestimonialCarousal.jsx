@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 
 import { Card, CardContent } from "@/components/ui/card"
 import {
@@ -9,7 +10,7 @@ import {
 } from "@/components/ui/carousel";
 import TestimonialCard from "./TestimonialCard";
 
-const TestimonialCarousal = () => {
+const TestimonialCarousal = ({ title }) => {
 
     const data = [
         {
@@ -44,23 +45,28 @@ const TestimonialCarousal = () => {
         },
     ]
     return (
-        <Carousel className="w-full">
-            <CarouselContent className="-ml-1">
-                {data?.map((item, index) => (
-                    <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                        <div className="">
-                            <Card>
-                                <CardContent className="">
-                                    <TestimonialCard item={item} />
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-        </Carousel>
+        <section className="">
+            <h1 className="text-3xl font-bold my-4 text-center">{title}</h1>
+            <div className=" py-2">
+                <Carousel className="w-full">
+                    <CarouselContent className="-ml-1">
+                        {data?.map((item, index) => (
+                            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                                <div className="">
+                                    <Card>
+                                        <CardContent className="">
+                                            <TestimonialCard item={item} />
+                                        </CardContent>
+                                    </Card>
+                                </div>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                </Carousel>
+            </div>
+        </section>
     )
 }
 

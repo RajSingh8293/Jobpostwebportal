@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
-import { fetchMySingleJob } from '@/redux/slices/myJobsSlice'
+import { backendApi } from '@/constant/BackendApi'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import axios from 'axios'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
@@ -13,7 +12,7 @@ const UpdateCompanyLogo = ({ open, setOpen, job }) => {
     const [imagePreview, setImagePreview] = useState()
     const [loading, setLoading] = useState()
     const navigate = useNavigate()
-    const dispatch = useDispatch()
+
 
 
     const [companyLogo, setCompanyLogo] = useState({
@@ -36,14 +35,13 @@ const UpdateCompanyLogo = ({ open, setOpen, job }) => {
             formData.append("logo", companyLogo.logo);
             setLoading(true)
             const { data } = await axios.put(
-                `${import.meta.env.VITE_REACT_APP_API_BASE_UR}/job/update/image/${job?._id}`,
+                `${backendApi}/job/update/image/${job?._id}`,
                 formData,
                 axiosConfig,
             )
             console.log(data?.user);
             if (data.success) {
                 toast.success(data.message)
-                dispatch(fetchMySingleJob())
                 navigate(`/my-job-details/${job?._id}`)
             }
             setLoading(false)

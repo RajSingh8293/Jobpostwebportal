@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { fetchApplicants } from "@/redux/slices/myJobsSlice";
 import { useEffect } from "react";
+import { backendApi } from "@/constant/BackendApi";
 
 const Applicants = () => {
     const { id } = useParams()
@@ -32,45 +33,21 @@ const Applicants = () => {
     console.log("singleJob :", singleJob);
 
 
-    // const getSingleJob = async () => {
-    //     try {
-    // const { data } = await axios.get(
-    //     `${import.meta.env.VITE_REACT_APP_API_BASE_UR}/application/get/${id}`,
-    //     {
-    //         withCredentials: true
-    //     },
 
 
 
     const updateStatus = async (status, orderId) => {
-        // console.log(status, id);
         try {
-            // const response = await fetch(
-            //     `${import.meta.env.VITE_REACT_APP_API_BASE_UR}/application/${orderId}/update-status`,
-            //     {
-            //         method: 'PUT',
-            //         credentials: 'include',
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //         },
-            //         body: JSON.stringify({ status }),
-            //     },
-            // )
-            // const data = await response.json()
-
-
-            const { data } = await axios.put(`${import.meta.env.VITE_REACT_APP_API_BASE_UR}/application/${orderId}/update-status`,
+            const { data } = await axios.put(`${backendApi}/application/${orderId}/update-status`,
                 { status },
                 {
                     withCredentials: true
                 },
             )
-
             if (data.success) {
                 toast.success(data.message)
                 dispatch(fetchApplicants(id))
             }
-
         } catch (error) {
             toast.error(error?.response?.data?.message)
 
@@ -122,7 +99,6 @@ const Applicants = () => {
                                                     <TableCell className="text-right">
                                                         <Popover>
                                                             <PopoverTrigger>
-                                                                {/* <HiEllipsisHorizontal className='text-xl' /> */}
                                                                 <p className="capitalize">
                                                                     {job?.status}
                                                                 </p>

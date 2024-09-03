@@ -138,8 +138,8 @@ export const createNewJob = (jobData) =>
             )
             if (data.success) {
                 dispatch(sucessForCreateJob(data));
-                toast.success(data?.message)
                 document.location.href = '/myjobs'
+                toast.success(data?.message)
 
             }
         } catch (error) {

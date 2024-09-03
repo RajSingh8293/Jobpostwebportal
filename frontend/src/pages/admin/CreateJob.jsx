@@ -1,9 +1,19 @@
+/* eslint-disable no-unused-vars */
 import Layout from '@/components/comp/Layout'
 import Sidebar from '@/components/comp/Sidebar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+
 import { createNewJob } from '@/redux/slices/myJobsSlice'
+import { data } from 'autoprefixer'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
@@ -31,12 +41,19 @@ const CreateJob = () => {
         jobType: "",
     })
 
+
+
+    const categoryArray = ["App Development", "Web Development", "Software Development", "Finance & Accounting", "Medical", "Restaurant", "Hotel"]
+    const JobTypeArray = ["Full Time", "Part Time", "Parmanent", "Temparay", "Contract Base"]
+
     const experienceArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     const onchangeHandler = (e) => {
         e.preventDefault()
         let name = e.target.name
         let value = e.target.value
         setJobData({ ...jobData, [name]: value })
+
+
     }
 
     const submitHandler = async (e) => {
@@ -47,7 +64,7 @@ const CreateJob = () => {
 
     return (
         <Layout>
-            <section className="min-h-screen px-10 py-16">
+            <section className="min-h-screen lg:px-10 px-5 py-24">
                 <div className="bg-white w-full flex flex-col gap-5  md:flex-row text-[#161931]">
                     <aside className="hidden py-4 md:w-1/3 lg:w-1/4 md:block">
                         <Sidebar />
@@ -82,7 +99,20 @@ const CreateJob = () => {
                                         <div className="mb-2 grid lg:grid-cols-2 grid-cols-1 gap-4">
                                             <div className="">
                                                 <Label>Category</Label>
-                                                <Input type="text" placeholder="Category" name="category" className="outline-none" value={jobData.category} onChange={onchangeHandler} />
+                                                <select
+                                                    className='w-[100%] border py-2 px-2 text-sm text-gray-500 rounded-md'
+                                                    name='category'
+                                                    value={jobData?.category}
+                                                    onChange={onchangeHandler}
+                                                >
+                                                    <option value="">Select Category</option>
+                                                    {
+                                                        categoryArray.map((data, index) =>
+                                                            <option key={index} value={data}> {data}</option>
+                                                        )}
+
+                                                </select>
+
                                             </div>
                                             <div className="">
                                                 <Label>Max Positions</Label>
@@ -97,7 +127,18 @@ const CreateJob = () => {
                                             </div>
                                             <div className="">
                                                 <Label>Job Type</Label>
-                                                <Input type="text" placeholder="Job type" name="jobType" className="outline-none" value={jobData.jobType} onChange={onchangeHandler} />
+                                                <select
+                                                    className='w-[100%] border py-2 px-2 text-sm text-gray-500 rounded-md'
+                                                    name='jobType'
+                                                    value={jobData?.jobType}
+                                                    onChange={onchangeHandler}
+                                                >
+                                                    <option value="">Select Job Type</option>
+                                                    {
+                                                        JobTypeArray.map((data, index) =>
+                                                            <option key={index} value={data}> {data}</option>
+                                                        )}
+                                                </select>
                                             </div>
 
 

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
+
 import JobCard from "@/components/comp/JobCard";
 import Layout from "@/components/comp/Layout"
 import {
@@ -29,11 +30,13 @@ const JobDetails = () => {
     const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
     const [relatedJobs, setRelatedJobs] = useState([])
-    console.log("relatedJobs :", relatedJobs);
+
 
     const { user, isAuthenticated } = useSelector((state) => state.auth)
     const { singleJob: job, jobs } = useSelector((state) => state.jobs)
     const isApplied = job?.applications?.some(application => application?.applicant?.userId === user?._id) || false;
+
+    console.log("job :", job);
 
     useEffect(() => {
         dispatch(fetchSingleJob(id))
@@ -129,15 +132,19 @@ const JobDetails = () => {
                                 <p>{job?.description}.</p>
                             </div>
 
-                            <div className="pb-10">
+                            {job?.responsibilities?.length > 1 ? <div className="pb-10">
                                 <h1 className="py-3 text-3xl font-bold">Responsibilities</h1>
                                 <ul className="list-disc flex flex-col gap-3 pl-5 pt-4">
                                     {job?.responsibilities?.map((res, index) =>
-                                        < li key={index} >{res}.</li>
-                                    )
-                                    }
+                                        res && <li key={index}>
+                                            {res}
+                                        </li>
+                                    )}
                                 </ul>
                             </div>
+                                :
+                                ""
+                            }
 
                             <div className="pb-10">
                                 <h1 className="py-3 text-3xl font-bold">Minimum Qualifications</h1>
@@ -217,13 +224,12 @@ const JobDetails = () => {
                                     {job?.title}
                                 </h1>
                             </div>
-                            <div className="flex flex-col">
-
+                            < div className="flex flex-col">
                                 <h1 className="text-xl font-semibold">
                                     Salary:
                                 </h1>
                                 <h1 className="text-normal opacity-50">
-                                    {job?.minSalary} - {job?.maxSalary}LPA
+                                    {job?.minSalary === "" || job?.mmxSalary === "" ? `${job?.minSalary} - ${job?.maxSalary}LPA` : "Not disclosed"}
                                 </h1>
                             </div>
                             <div className="flex flex-col">
@@ -236,21 +242,11 @@ const JobDetails = () => {
                                 </h1>
                             </div>
                             <div className="flex flex-col">
-
                                 <h1 className="text-xl font-semibold">
                                     Experience:
                                 </h1>
                                 <h1 className="text-normal opacity-50">
-                                    {job?.maxExperience ?
-                                        <span>
-                                            {job?.minExperience} - {job?.maxExperience} Years Experience
-                                        </span>
-                                        :
-                                        <span>
-                                            0
-                                        </span>
-
-                                    }
+                                    {job?.minExperience !== "" || job?.maxExperience !== "" ? `${job?.minExperience} - ${job?.maxExperience} Years Experience` : "0 - 1 Years Experience"}
                                 </h1>
                             </div>
                             <div className="py-8 flex flex-col">

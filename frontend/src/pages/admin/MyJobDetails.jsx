@@ -27,8 +27,16 @@ const MyJobDetails = () => {
     const [open, setOpen] = useState(false)
     const { mySingleJob: jobDetails } = useSelector((state) => state.myjobs)
 
+    console.log("jobDetails :", jobDetails);
+
+
 
     useEffect(() => {
+        window.scroll({
+            top: 0,
+            behavior: "smooth",
+        });
+
         dispatch(fetchMySingleJob(id))
     }, [dispatch, id])
 
@@ -62,22 +70,24 @@ const MyJobDetails = () => {
                     {/* left  */}
                     <div className="grid lg:col-span-4 col-span-6 ">
                         <div className="order-0 border bg-white py-10 lg:px-20 md:px-10 px-8">
-                            <div className="pb-10">
+                            {jobDetails?.description && <div className="pb-10">
                                 <h1 className="py-3 text-3xl font-bold">Desctipion</h1>
                                 <p>{jobDetails?.description}.</p>
-                            </div>
+                            </div>}
 
 
-                            {jobDetails?.responsibilities && <div className="pb-10">
+                            {jobDetails?.responsibilities?.length > 1 ? <div className="pb-10">
                                 <h1 className="py-3 text-3xl font-bold">Responsibilities</h1>
                                 <ul className="list-disc flex flex-col gap-3 pl-5 pt-4">
-                                    {jobDetails?.responsibilities && jobDetails?.responsibilities?.map((res, index) =>
-                                        <li key={index}>
+                                    {jobDetails?.responsibilities?.map((res, index) =>
+                                        res && <li key={index}>
                                             {res}
                                         </li>
                                     )}
                                 </ul>
                             </div>
+                                :
+                                ""
                             }
 
 
@@ -128,10 +138,10 @@ const MyJobDetails = () => {
                                         Change Logo
                                     </Button>
                                 </div>
-                                <div className="flex flex-col justify-center items-center">
-                                    <h1 className="text-blue-500">Google</h1>
-                                    <p className="flex gap-5"> Web Developer – PHP</p>
-                                </div>
+                                {jobDetails.company && <div className="flex flex-col justify-center items-center">
+                                    <h1 className="text-blue-500">{jobDetails?.company}</h1>
+                                    <p className="flex gap-5">{jobDetails?.title}</p>
+                                </div>}
                                 <span className="absolute top-2 right-2 border p-1.5 rounded-lg hover:bg-[#EF3A3A]">
                                     <CiHeart className="text-[red] hover:text-white overflow-hidden font-bold " fontSize={20} />
                                 </span>
@@ -143,34 +153,33 @@ const MyJobDetails = () => {
                                     Dated Posted:
                                 </h1>
                                 <h1 className="text-normal opacity-50">
-                                    {jobDetails?.createdBy}
+                                    {jobDetails?.createdAt?.split("T")[0]}
                                 </h1>
                             </div>
-                            <div className="flex flex-col">
+                            {jobDetails?.location && <div className="flex flex-col">
 
                                 <h1 className="text-xl font-semibold">
                                     Location:
                                 </h1>
                                 <h1 className="text-normal opacity-50">
-                                    Bawana Rd Puth Khurd Delhi, 110039
+                                    {jobDetails?.location}
                                 </h1>
-                            </div>
-                            <div className="flex flex-col">
+                            </div>}
+                            {jobDetails?.title && <div className="flex flex-col">
 
                                 <h1 className="text-xl font-semibold">
                                     Title:
                                 </h1>
                                 <h1 className="text-normal opacity-50">
-                                    Web Developer – PHP
+                                    {jobDetails?.title}
                                 </h1>
-                            </div>
-                            <div className="flex flex-col">
-
+                            </div>}
+                            < div className="flex flex-col">
                                 <h1 className="text-xl font-semibold">
                                     Salary:
                                 </h1>
                                 <h1 className="text-normal opacity-50">
-                                    $12k - $20k
+                                    {jobDetails?.minSalary === "" || jobDetails?.maxSalary === "" ? `${jobDetails?.minSalary} - ${jobDetails?.maxSalary}LPA` : "Not disclosed"}
                                 </h1>
                             </div>
                             <div className="flex flex-col">
@@ -179,16 +188,15 @@ const MyJobDetails = () => {
                                     Category:
                                 </h1>
                                 <h1 className="text-normal opacity-50">
-                                    Developer
+                                    {jobDetails?.category}
                                 </h1>
                             </div>
                             <div className="flex flex-col">
-
                                 <h1 className="text-xl font-semibold">
                                     Experience:
                                 </h1>
                                 <h1 className="text-normal opacity-50">
-                                    2+ Years Experience
+                                    {jobDetails?.minExperience !== "" || jobDetails?.maxExperience !== "" ? `${jobDetails?.minExperience} - ${jobDetails?.maxExperience} Years Experience` : "0 - 1 Years Experience"}
                                 </h1>
                             </div>
                         </div>
