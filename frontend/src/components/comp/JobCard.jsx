@@ -34,7 +34,7 @@ const JobCard = ({ job }) => {
                     <div className="flex justify-center items-center flex-col">
                         {job?.logo?.url !== "" ? <img className="w-24 h-24 rounded-full" src={job?.logo?.url} alt="" />
                             :
-                            <img className="w-24 h-24 rounded-full" src='/public/job_card_img.jpg' alt="" />}
+                            <img className="w-24 h-24 rounded-full" src='/job_card_img.jpg' alt="" />}
                     </div>
                     <div className="flex flex-col justify-center items-center gap-1 py-2">
                         <h1 className="text-[#83c0e9] text-xl">
