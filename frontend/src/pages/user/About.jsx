@@ -12,7 +12,7 @@ const About = () => {
                         #about us
                     </h2>
                 </div>
-                <div className=" overflow-hidden bg-gray-50  dark:bg-gray-800 md:pt-0 sm:pt-16 2xl:pt-16">
+                <div className=" overflow-hidden bg-gray-50 lg:pt-16 pt-8 dark:bg-gray-800 md:pt-0 sm:pt-16 2xl:pt-16">
                     <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
                         <div className="grid items-center grid-cols-1 md:grid-cols-2">
                             <div>
