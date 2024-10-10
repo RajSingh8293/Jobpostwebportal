@@ -13,8 +13,8 @@ const port = process.env.PORT || 5500;
 
 // app.use(cors());
 const corsOptions = {
-  origin: ["http://localhost:5178"],
-  // origin: ["https://jobpostwebportal-frontedn.vercel.app"],
+  // origin: ["http://localhost:5178"],
+  origin: ["https://jobpostwebportal-frontedn.vercel.app"],
   credentials: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 };
