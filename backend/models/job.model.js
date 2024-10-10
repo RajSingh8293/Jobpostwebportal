@@ -12,60 +12,25 @@ const jobSchema = new mongoose.Schema(
         default: "",
       },
     },
-    title: {
-      type: String,
-      required: true,
-    },
-    company: {
-      type: String,
-      required: true,
-    },
-    minSalary: {
-      type: Number,
-      default: 0,
-    },
-    maxSalary: {
-      type: Number,
-      default: 0,
-    },
-    category: {
-      type: String,
-    },
-    minExperience: {
-      type: Number,
-      default: 0,
-    },
-    maxExperience: {
-      type: Number,
-      default: 0,
-    },
+    title: { type: String, required: true },
+    company: { type: String, required: true },
+    salary: { type: Number, required: true },
+    category: { type: String, required: true },
 
-    location: {
-      type: String,
-    },
-    address: {
-      type: String,
-    },
-    skills: [{ type: String }],
-    responsibilities: [{ type: String }],
-    description: {
-      type: String,
-    },
-    jobRole: {
-      type: String,
-    },
+    location: { type: String, required: true },
+    address: { type: String, required: true },
+    city: { type: String, required: true },
 
-    maxPositions: {
-      type: Number,
-      default: 0,
-    },
-    jobType: {
-      type: String,
-    },
+    skills: { type: [String], required: true },
+    description: { type: String, required: true },
+
+    jobRole: { type: String, required: true },
+    maxPositions: { type: Number, required: true },
+    jobType: { type: String, required: true },
+    experienceLevel: { type: String, required: true },
     companyWebsite: {
       type: String,
     },
-
     rating: {
       type: Number,
       default: 0,

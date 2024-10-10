@@ -1,6 +1,6 @@
 import { logoutUser } from "@/redux/slices/userSlice"
 import { useDispatch, useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 
 const Sidebar = () => {
@@ -18,35 +18,35 @@ const Sidebar = () => {
                 user?.role === "recruiter"
                     ?
 
-                    <div className="sticky flex flex-col gap-2 pr-4 text-sm border-r border-indigo-100 top-12">
-                        <Link to='/myjobs' className="pl-3 mb-4 text-2xl font-semibold">Dashboard</Link>
+                    <div className="dashboard sticky flex flex-col gap-2 pr-4 text-sm border-r border-indigo-100 top-12">
+                        <NavLink to='/myjobs' className="pl-3 mb-4 text-2xl font-semibold">Dashboard</NavLink>
 
-                        <Link to="/profile" className="flex items-center px-3 py-2.5 font-bold bg-white  text-indigo-900 border rounded-full">
+                        <NavLink to="/profile" className="sidbarLink flex items-center px-3 py-2.5 font-bold bg-white  text-indigo-900 border ">
                             Profile
-                        </Link>
-                        <Link to="/myjobs"
-                            className="flex items-center px-3 py-2.5 font-semibold  hover:text-indigo-900 hover:border hover:rounded-full">
+                        </NavLink>
+                        <NavLink to="/myjobs"
+                            className="sidbarLink flex items-center px-3 py-2.5 font-semibold  hover:text-indigo-900 ">
                             My Jobs
-                        </Link>
+                        </NavLink>
                         <button
                             onClick={logoutHandler}
-                            className="flex items-center px-3 py-2.5 font-semibold hover:text-indigo-900 hover:border hover:rounded-full ">
+                            className="sidbarLink flex  items-center px-3 py-2.5 font-semibold hover:text-indigo-900 ">
                             Logout
                         </button>
                     </div>
                     :
-                    <div className="sticky flex flex-col gap-2 pr-4 text-sm border-r border-indigo-100 top-12">
-                        <Link to='/' className="pl-3 mb-4 text-2xl font-semibold">Home</Link>
-                        <Link to="/profile" className="flex items-center px-3 py-2.5 font-bold bg-white  text-indigo-900 border rounded-full">
+                    <div className="dashboard sticky flex flex-col gap-2 pr-4 text-sm border-r border-indigo-100 top-12">
+                        <NavLink to='/' className="pl-3 mb-4 text-2xl font-semibold">Home</NavLink>
+                        <NavLink to="/profile" className="sidbarLink flex items-center px-3 py-2.5 font-bold  text-indigo-900 border hover:bg-gray-200">
                             Profile
-                        </Link>
-                        <Link to="/applied-jobs"
-                            className="flex items-center px-3 py-2.5 font-semibold  hover:text-indigo-900 hover:border hover:rounded-full">
+                        </NavLink>
+                        <NavLink to="/applied-jobs"
+                            className="sidbarLink flex border hover:bg-gray-200 items-center px-3 py-2.5 font-semibold  hover:text-indigo-900">
                             Applied Jobs
-                        </Link>
+                        </NavLink>
                         <button
                             onClick={logoutHandler}
-                            className="flex items-center px-3 py-2.5 font-semibold hover:text-indigo-900 hover:border hover:rounded-full ">
+                            className="sidbarLink flex border hover:bg-gray-200 items-center px-3 py-2.5 font-semibold hover:text-indigo-900 ">
                             Logout
                         </button>
                     </div>

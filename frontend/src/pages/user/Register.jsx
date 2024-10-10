@@ -44,7 +44,6 @@ const Register = () => {
     const submitHandler = async (e) => {
         e.preventDefault()
         console.log("userData :", userData);
-
         dispatch(registerUser(userData))
     }
 
@@ -111,7 +110,7 @@ const Register = () => {
                                 <Button type="submit" onClick={submitHandler}>Submit</Button>
                             </div>
                             <div className="">
-                                <p>I already have an account  <NavLink className="hover:underline hover:text-blue-500" to='/login'>Login</NavLink></p>
+                                <p>I already have an account  <NavLink className="hover:underline text-blue-500 hover:text-blue-500" to='/login'>Login</NavLink></p>
                             </div>
                         </form>
                     </div>

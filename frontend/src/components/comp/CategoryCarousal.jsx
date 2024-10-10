@@ -10,11 +10,10 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 
-const CategoryCarousal = ({ filterData, category, title }) => {
+const CategoryCarousal = ({ filterData, category }) => {
 
     return (
-        <section className="lg:px-20 px-16">
-            <h1 className="text-3xl font-bold py-4 text-center">{title}</h1>
+        <section className="lg:px-10 px-10">
             <div className="">
                 <Carousel className="">
                     <CarouselContent className="">

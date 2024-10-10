@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react";
-import { CiHeart } from "react-icons/ci";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa";
@@ -22,6 +21,9 @@ import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import ApplyJobBox from "./ApplyJobBox";
 import { fetchJobs, fetchSingleJob } from "@/redux/slices/JobsSlice";
+import { addTowhistList, removeFromWhishList } from "@/redux/slices/wishlistSlice";
+import { Heart } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 
 
@@ -31,12 +33,19 @@ const JobDetails = () => {
     const [open, setOpen] = useState(false)
     const [relatedJobs, setRelatedJobs] = useState([])
 
-
+    const { favorateItems } = useSelector((state) => state.whishListItems)
     const { user, isAuthenticated } = useSelector((state) => state.auth)
     const { singleJob: job, jobs } = useSelector((state) => state.jobs)
     const isApplied = job?.applications?.some(application => application?.applicant?.userId === user?._id) || false;
 
-    console.log("job :", job);
+    const whishlsit = favorateItems?.find((item) => item._id === job._id)
+
+    const addToWishList = (id) => {
+        dispatch(addTowhistList(id))
+    }
+    const removeToWishList = (id) => {
+        dispatch(removeFromWhishList(id))
+    }
 
     useEffect(() => {
         dispatch(fetchSingleJob(id))
@@ -132,28 +141,27 @@ const JobDetails = () => {
                                 <p>{job?.description}.</p>
                             </div>
 
-                            {job?.responsibilities?.length > 1 ? <div className="pb-10">
-                                <h1 className="py-3 text-3xl font-bold">Responsibilities</h1>
-                                <ul className="list-disc flex flex-col gap-3 pl-5 pt-4">
-                                    {job?.responsibilities?.map((res, index) =>
-                                        res && <li key={index}>
-                                            {res}
-                                        </li>
+                            <div className="pb-10">
+                                <h1 className="py-3 text-3xl font-bold">Required Skills</h1>
+                                <div className="list-disc flex gap-3  pt-4">
+                                    {job?.skills?.map((res, index) =>
+                                        res && <p key={index} >
+                                            <Badge >{res}</Badge>
+                                        </p>
                                     )}
-                                </ul>
+                                </div>
                             </div>
-                                :
-                                ""
-                            }
+
+
 
                             <div className="pb-10">
-                                <h1 className="py-3 text-3xl font-bold">Minimum Qualifications</h1>
-                                <ul className="list-disc flex flex-col gap-3 pl-5 pt-4">
-                                    <li>BA/BS degree in a technical field or equivalent practical experience..</li>
-                                    <li>Programming experience in C, C++ or Java.</li>
-                                    <li>Experience with AJAX, HTML and CSS.</li>
-                                    <li>2 years of relevant work experience in software development..</li>
-                                </ul>
+                                <div className="list-disc flex flex-col gap-3 pt-4">
+                                    <div> <strong>Role </strong> : {job?.jobRole}</div>
+                                    <div> <strong>Industry Type </strong> : {job?.company}</div>
+                                    <div> <strong>Department </strong> : {job?.category}</div>
+                                    <div> <strong>Employment Type </strong> : {job?.jobType}</div>
+                                    <div> <strong>Role Category </strong> : {job?.category}</div>
+                                </div>
                             </div>
 
                             <div className="pb-10">
@@ -229,7 +237,9 @@ const JobDetails = () => {
                                     Salary:
                                 </h1>
                                 <h1 className="text-normal opacity-50">
-                                    {job?.minSalary === "" || job?.mmxSalary === "" ? `${job?.minSalary} - ${job?.maxSalary}LPA` : "Not disclosed"}
+                                    <span>
+                                        {job?.salary ? `${job?.salary / 100000} LPA` : "Not disclosed"}
+                                    </span>
                                 </h1>
                             </div>
                             <div className="flex flex-col">
@@ -241,14 +251,14 @@ const JobDetails = () => {
                                     {job?.category}
                                 </h1>
                             </div>
-                            <div className="flex flex-col">
+                            {job?.experienceLevel && <div className="flex flex-col">
                                 <h1 className="text-xl font-semibold">
                                     Experience:
                                 </h1>
                                 <h1 className="text-normal opacity-50">
-                                    {job?.minExperience !== "" || job?.maxExperience !== "" ? `${job?.minExperience} - ${job?.maxExperience} Years Experience` : "0 - 1 Years Experience"}
+                                    {job?.experienceLevel} experience
                                 </h1>
-                            </div>
+                            </div>}
                             <div className="py-8 flex flex-col">
                                 <span className="py-2">Before apply this job you have to login first</span>
                                 {user && user !== null ?
@@ -279,15 +289,21 @@ const JobDetails = () => {
                                 <div className="w-24 h-24 rounded-full overflow-hidden">
                                     {job && job?.logo?.url ? <img src={job?.logo?.url} alt="" />
                                         :
-                                        <img src="https://marketplace.canva.com/EAE0rNNM2Fg/1/0/1600w/canva-letter-c-trade-marketing-logo-design-template-r9VFYrbB35Y.jpg" alt="" />}
+                                        <img src='/public/job_card_img.jpg' alt="" />}
                                 </div>
                                 <div className="flex flex-col justify-center items-center">
                                     <h1 className="text-blue-500">{job?.company}</h1>
                                     <p className="flex gap-5"> {job?.title}</p>
                                 </div>
-                                <span className="absolute top-2 right-2 border p-1.5 rounded-lg hover:bg-[#EF3A3A]">
-                                    <CiHeart className="text-[red] hover:text-white overflow-hidden font-bold " fontSize={20} />
-                                </span>
+                                {whishlsit ?
+                                    <span className={`absolute bg-[#EF3A3A] text-white top-2 right-2 border p-1.5 rounded-lg hover:bg-[#EF3A3A] `}>
+                                        <Heart onClick={() => removeToWishList(job)} className="  hover:text-white overflow-hidden font-bold " size={20} />
+                                    </span>
+                                    :
+                                    <span className="absolute hover:bg-[#EF3A3A] hover:text-white top-2 right-2 border p-1.5 rounded-lg hover:bg-[#EF3A3A">
+                                        <Heart onClick={() => addToWishList(job)} className="  overflow-hidden font-bold " size={20} />
+                                    </span>
+                                }
                             </div>
                         </div>
 

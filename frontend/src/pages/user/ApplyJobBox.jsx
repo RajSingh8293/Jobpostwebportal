@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { createApplication } from "@/redux/slices/myJobsSlice"
+import { createApplication } from "@/redux/slices/applicationSlice"
 
 
 const ApplyJobBox = ({ open, setOpen, id }) => {
@@ -101,7 +101,7 @@ const ApplyJobBox = ({ open, setOpen, id }) => {
                                             <label className="" >Resume</label>
                                             <input
                                                 type="file"
-                                                accept='.pdf, .docx, .doc, .odt'
+                                                accept='.pdf, .docx, .doc, .odt, .jpg, .jpeg'
                                                 name='resume'
                                                 onChange={onchangeFileHandler}
                                                 // onChange={(e) => setResume(e.target.files[0])}

@@ -19,7 +19,7 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { fetchApplicants } from "@/redux/slices/myJobsSlice";
+import { fetchApplicants } from "@/redux/slices/recruiterJobsSlice";
 import { useEffect } from "react";
 import { backendApi } from "@/constant/BackendApi";
 

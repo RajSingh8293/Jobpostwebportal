@@ -4,7 +4,6 @@ import User from "../models/user.model.js";
 export const isAuthenticated = async (req, res, next) => {
   try {
     let { token } = req.cookies;
-    console.log("token ", token);
     if (!token) {
       res.status(400).json({
         success: false,
@@ -28,7 +27,7 @@ export const isAuthenticated = async (req, res, next) => {
 export const recruiterAuth = (req, res, next) => {
   try {
     // if (req.user && req.user.role === 'admin') {
-    if (req.user && req.user?.role == "recruiter") {
+    if (req.user && req.user?.role === "recruiter") {
       return next();
     } else {
       return res.status(401).json({ success: false, message: "Unauthorized" });

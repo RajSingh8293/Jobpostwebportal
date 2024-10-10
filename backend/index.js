@@ -13,10 +13,8 @@ const port = process.env.PORT || 5500;
 
 // app.use(cors());
 const corsOptions = {
-  origin: [
-    "https://jobpostwebportal-frontedn.vercel.app",
-    // "http://localhost:5173",
-  ],
+  origin: ["http://localhost:5178"],
+  // origin: ["https://jobpostwebportal-frontedn.vercel.app"],
   credentials: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 };
@@ -26,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(express.static("public"));
+app.use(express.static("./public"));
 
 // routes
 import userRouter from "./routes/user.routes.js";

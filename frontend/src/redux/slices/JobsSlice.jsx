@@ -4,6 +4,7 @@
 import { backendApi } from "@/constant/BackendApi";
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const JobsSlice = createSlice({
     name: "jobs",
@@ -22,7 +23,10 @@ export const JobsSlice = createSlice({
         },
         sucessForJobs: (state, action) => {
             state.loading = false;
-            state.jobs = action.payload;
+            state.jobs = action.payload.jobs;
+            state.totalJobs = action.payload.totalJobs;
+            state.totalPages = action.payload.totalPages;
+            state.currentPage = action.payload.currentPage;
             state.error = null
         },
         failedForJobs: (state, action) => {
@@ -44,51 +48,23 @@ export const JobsSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-
-        requestMyAppliedJobs: (state, action) => {
-            state.loading = true
-            state.error = null;
-        },
-
-        successMyAppliedJobs: (state, action) => {
-            state.loading = false
-            state.myAppliedJobs = action.payload;
-            state.error = null;
-        },
-
-        failedMyAppliedJobs: (state, action) => {
-            state.loading = false
-            state.error = action.payload;
-        },
-
-
-
-        requestAllMyJobs: (state, action) => {
-            state.loading = true;
-            state.error = null
-        },
-        sucessAllMyJobs: (state, action) => {
-            state.loading = false;
-            state.myjobs = action.payload;
-            state.error = null
-        },
-        failedAllMyJobs: (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
-        },
     }
 }
 )
 
 
 
-export const { requestForJobs, sucessForJobs,
-    requestSingleJob, sucessSingleJob, failedSingleJob,
-    requestMyAppliedJobs,
-    successMyAppliedJobs,
-    failedMyAppliedJobs,
-    requestAllMyJobs, sucessAllMyJobs, failedAllMyJobs,
-    clearAllError, failedForJobs } = JobsSlice.actions;
+export const {
+    requestForJobs,
+    sucessForJobs,
+    failedForJobs,
+
+    requestSingleJob,
+    sucessSingleJob,
+    failedSingleJob,
+
+    clearAllError,
+} = JobsSlice.actions;
 export default JobsSlice.reducer;
 
 
@@ -96,7 +72,7 @@ let axiosConfig = {
     withCredentials: true,
 }
 // all jobs 
-export const fetchJobs = (city, category, searchKeyword = "") => async (dispatch) => {
+export const fetchJobs = (city, category, currentPage, searchKeyword = "") => async (dispatch) => {
     try {
         dispatch(requestForJobs());
         let link = `${backendApi}/job/get?`;
@@ -104,6 +80,9 @@ export const fetchJobs = (city, category, searchKeyword = "") => async (dispatch
         let queryParams = [];
         if (searchKeyword) {
             queryParams.push(`searchKeyword=${searchKeyword}`);
+        }
+        if (currentPage) {
+            queryParams.push(`page=${currentPage}`);
         }
         if (city) {
             queryParams.push(`city=${city}`);
@@ -113,8 +92,7 @@ export const fetchJobs = (city, category, searchKeyword = "") => async (dispatch
         }
         link += queryParams.join("&")
         const response = await axios.get(link)
-
-        dispatch(sucessForJobs(response?.data?.jobs))
+        dispatch(sucessForJobs(response?.data))
     } catch (error) {
         console.log(error);
         dispatch(failedForJobs(error?.response?.data?.message))
@@ -139,25 +117,6 @@ export const fetchSingleJob = (id) => async (dispatch) => {
         dispatch(failedSingleJob(error?.response?.data?.message))
     }
 
-}
-
-// user applied jobs 
-export const getMyAppliedJobs = () => {
-    return async (dispatch) => {
-        dispatch(requestMyAppliedJobs())
-        try {
-            const { data } = await axios.get(`${backendApi}/application/get-applied-myjobs`, axiosConfig);
-            console.log("getMyAppliedJobs :", data);
-
-            if (data.success) {
-                dispatch(successMyAppliedJobs(data?.application));
-            }
-        } catch (error) {
-            console.log(error);
-            dispatch(failedMyAppliedJobs(error?.response?.data?.message))
-
-        }
-    };
 }
 
 

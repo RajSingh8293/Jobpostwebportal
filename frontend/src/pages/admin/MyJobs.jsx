@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import Layout from "@/components/comp/Layout"
 import Sidebar from "@/components/comp/Sidebar"
 import {
@@ -13,7 +12,7 @@ import {
 import { CiUser } from "react-icons/ci"
 import { IoTrashOutline } from "react-icons/io5"
 import { Link, NavLink } from "react-router-dom"
-import { HiEllipsisHorizontal } from "react-icons/hi2";
+// import { HiEllipsisHorizontal } from "react-icons/hi2";
 import { useEffect, useState } from "react"
 import {
     Popover,
@@ -25,13 +24,19 @@ import { Button } from "@/components/ui/button"
 // import useRecruiterJobs from "@/hooks/useRecruiterJobs"
 import { toast } from "react-toastify"
 import axios from "axios"
-import { fetchAllMyJobs } from "@/redux/slices/myJobsSlice"
+import { fetchAllMyJobs } from "@/redux/slices/recruiterJobsSlice"
 import { backendApi } from "@/constant/BackendApi"
+import { MoreHorizontal } from "lucide-react"
+import { Pagination } from "@mui/material"
 
 const MyJobs = () => {
     const dispatch = useDispatch()
-    const { myjobs } = useSelector((state) => state.myjobs)
+    const [currentPage, setCurrentPage] = useState(1)
+    const { myjobs, totalJobs, totalPages } = useSelector((state) => state.myjobs)
 
+    const setCurrentPageNo = (event, value) => {
+        setCurrentPage(value);
+    };
     const deleteMyJob = async (jobId) => {
         try {
             const { data } = await axios.delete(`${backendApi}/job/delete/${jobId}`,
@@ -53,8 +58,8 @@ const MyJobs = () => {
             top: 0,
             behavior: "smooth",
         });
-        dispatch(fetchAllMyJobs())
-    }, [dispatch])
+        dispatch(fetchAllMyJobs(currentPage))
+    }, [dispatch, currentPage])
 
     return (
         <Layout>
@@ -67,7 +72,7 @@ const MyJobs = () => {
                         <div className="w-full  md:p-4">
                             <div className="border-b  sm:rounded-lg">
                                 <div className="pb-5 flex justify-between items-center">
-                                    <h2 className="text-2xl font-bold sm:text-xl">My All Jobs</h2>
+                                    <h2 className="text-2xl font-bold sm:text-xl">Showing {myjobs?.length} of {totalJobs}</h2>
                                     <Button><Link to='/create-job'>Create New Job</Link></Button>
                                 </div>
                                 <hr />
@@ -115,7 +120,7 @@ const MyJobs = () => {
                                                     <TableCell className="text-right">
                                                         <Popover>
                                                             <PopoverTrigger>
-                                                                <HiEllipsisHorizontal className='text-xl' />
+                                                                <MoreHorizontal className='text-xl' />
                                                             </PopoverTrigger>
                                                             <PopoverContent className="w-fit"
                                                             >
@@ -126,7 +131,6 @@ const MyJobs = () => {
                                                                     <NavLink to={`/job-applicants/${job?._id}`} className="flex gap-3 px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"  ><span>
                                                                         <CiUser className="hover:text-[red] text-xl " /></span> <span>Applicants</span></NavLink>
                                                                 </div>
-
                                                             </PopoverContent>
                                                         </Popover>
                                                     </TableCell>
@@ -135,10 +139,10 @@ const MyJobs = () => {
                                         </TableBody>
                                     </Table>
                                 </div>
-
-
-
                             </div>
+                        </div>
+                        <div className="flex justify-center py-5">
+                            <Pagination count={totalPages} onChange={setCurrentPageNo} variant="outlined" color="secondary" />
                         </div>
                     </main>
 

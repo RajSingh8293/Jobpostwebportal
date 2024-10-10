@@ -5,7 +5,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-export const myJobsSlice = createSlice({
+export const recruiterJobsSlice = createSlice({
     name: "myjobs",
     initialState: {
         loading: false,
@@ -23,7 +23,10 @@ export const myJobsSlice = createSlice({
         },
         sucessForMyJobs: (state, action) => {
             state.loading = false;
-            state.myjobs = action.payload;
+            state.myjobs = action.payload.jobs;
+            state.totalJobs = action.payload.totalJobs;
+            state.totalPages = action.payload.totalPages;
+            state.currentPage = action.payload.currentPage;
             state.error = null
         },
         failedForMyJobs: (state, action) => {
@@ -78,20 +81,13 @@ export const myJobsSlice = createSlice({
             state.mySingleJob = action.payload;
         },
 
-
-
-        requestForPostApplication: (state, action) => {
-            state.loading = true
-            state.error = null;
-        },
-
-        successForPostApplication: (state, action) => {
+        successForDeleteMyJob: (state, action) => {
             state.loading = false
             state.error = null;
-            state.message = action.payload;
+            state.message = action.payload.message;
         },
 
-        failedForPostApplication: (state, action) => {
+        failedForDeleteMyJob: (state, action) => {
             state.loading = false
             state.error = action.payload;
             state.message = null;
@@ -116,12 +112,11 @@ export const {
     sucessForGetSMyingleJob,
     failedForGetSMyingleJob,
 
-    requestForPostApplication,
-    successForPostApplication,
-    failedForPostApplication,
+    successForDeleteMyJob,
+    failedForDeleteMyJob,
 
-    setApplicants, getMySingleJob, setCreateJob, setStatus } = myJobsSlice.actions;
-export default myJobsSlice.reducer;
+    setApplicants, getMySingleJob, setCreateJob, setStatus } = recruiterJobsSlice.actions;
+export default recruiterJobsSlice.reducer;
 
 let axiosConfig = {
     withCredentials: true,
@@ -148,14 +143,23 @@ export const createNewJob = (jobData) =>
         }
     };
 
-export const fetchAllMyJobs = () => async (dispatch) => {
+
+export const fetchAllMyJobs = (currentPage) => async (dispatch) => {
     try {
         dispatch(requestForMyJobs())
-        const { data } = await axios.get(`${backendApi}/job/get/recruiter/jobs`, axiosConfig)
+        let link = `${backendApi}/job/get/recruiter/jobs?`;
+
+        let queryParams = [];
+        if (currentPage) {
+            queryParams.push(`page=${currentPage}`);
+        }
+
+        link += queryParams.join("&")
+        const { data } = await axios.get(link, axiosConfig)
         console.log("my jobs :", data);
 
         if (data.success) {
-            dispatch(sucessForMyJobs(data?.jobs))
+            dispatch(sucessForMyJobs(data))
         }
 
     } catch (error) {
@@ -203,26 +207,5 @@ export const fetchMySingleJob = (id) => async (dispatch) => {
 }
 
 
-const axiosConfigMultipart = {
-    headers: { "Content-Type": "multipart/form-data" },
-    withCredentials: true,
-}
 
-export const createApplication = (userData, jobId) =>
-    async (dispatch) => {
-        try {
-            dispatch(requestForPostApplication())
-            const { data } = await axios.post(`${backendApi}/application/apply/${jobId}`, userData, axiosConfigMultipart);
-            console.log("data :", data);
-
-            if (data.success) {
-                dispatch(successForPostApplication(data));
-                toast.success(data?.message)
-            }
-
-        } catch (error) {
-            console.log(error);
-            dispatch(failedForPostApplication(error?.response?.data?.message))
-        }
-    };
 

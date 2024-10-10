@@ -10,7 +10,7 @@ import { store } from './redux/store.jsx';
 createRoot(document.getElementById('root')).render(
   <>
     <Provider store={store}>
-      < ToastContainer theme='dark' />
+      < ToastContainer position='bottom-right' theme='dark' autoClose={5000} />
       <App />
     </Provider>
   </>

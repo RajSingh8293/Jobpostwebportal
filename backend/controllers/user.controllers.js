@@ -2,9 +2,33 @@ import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 import { deleteOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 import User from "../models/user.model.js";
+import { generateToken, sendResponse } from "../middleware/generateToken.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
+export const deleteAllUsers = async (req, res) => {
+  try {
+    const users = await User.deleteMany();
+    if (!users) {
+      res.status(400).json({
+        message: "Users not deleted",
+        success: false,
+      });
+      return;
+    }
+    res.status(201).json({
+      message: "Users are deleted succefully",
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something wrong with deleting multiple users",
+      error,
+    });
+  }
+};
 // register user
-export const registerUser = async (req, res) => {
+export const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password, location, phone, role } = req.body;
   try {
     if (!username) {
@@ -42,23 +66,7 @@ export const registerUser = async (req, res) => {
 
     const user = await userdata.save();
 
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
-
-    // console.log("user :", user);
-
-    const { password: pass, ...rest } = user._doc; //  hide passwrod
-    const options = {
-      httpOnly: true,
-      secure: true,
-    };
-    res.status(201).cookie("token", token, options).json({
-      user: rest,
-      token: token,
-      success: true,
-      message: "User logged In Successfully",
-    });
+    sendResponse(res, user, 201, "Register logged In Successfully");
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -66,10 +74,10 @@ export const registerUser = async (req, res) => {
       error,
     });
   }
-};
+});
 
 // login user
-export const loginUser = async (req, res) => {
+export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   if (!password) {
     return res
@@ -99,24 +107,7 @@ export const loginUser = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
-
-    const options = {
-      httpOnly: true,
-      secure: true,
-    };
-    const { password: pass, ...rest } = user._doc; // hide password
-    res
-      .status(200)
-      .cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000 }, options)
-      .json({
-        success: true,
-        message: "Logged in successfully",
-        user: rest,
-        token,
-      });
+    sendResponse(res, user, 200, "Logged in successfully");
   } catch (error) {
     return res.status(400).json({
       success: false,
@@ -124,10 +115,10 @@ export const loginUser = async (req, res) => {
       error,
     });
   }
-};
+});
 
 // logout user
-export const logoutUser = async (req, res) => {
+export const logoutUser = asyncHandler(async (req, res) => {
   try {
     const options = {
       httpOnly: true,
@@ -144,13 +135,12 @@ export const logoutUser = async (req, res) => {
       message: "Something wrong with logged Out",
     });
   }
-};
+});
 
 // profile
-export const getProfile = async (req, res) => {
+export const getProfile = asyncHandler(async (req, res) => {
   try {
     const user = await User.findById(req.user?._id).select("-password");
-    console.log("user :", user);
 
     if (!user) {
       return res.status(400).json({
@@ -171,10 +161,10 @@ export const getProfile = async (req, res) => {
       error,
     });
   }
-};
+});
 
 // update profile
-export const updateProfile = async (req, res) => {
+export const updateProfile = asyncHandler(async (req, res) => {
   const { username, email, location, phone } = req.body;
   try {
     const user = await User.findById(req.user?._id).select("-password");
@@ -197,23 +187,7 @@ export const updateProfile = async (req, res) => {
       },
       { new: true }
     );
-
-    // const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-    //   expiresIn: "7d",
-    // });
-    // return res.status(200).json({
-    //   success: true,
-    //   message: "User updated successfully",
-    //   user,
-    //   token,
-    // });
-
-    res.status(200).json({
-      success: true,
-      message: "User updated successfully",
-      user: userUpdate,
-      //   token,
-    });
+    sendResponse(res, userUpdate, 200, "User updated successfully");
   } catch (error) {
     return res.status(400).json({
       success: false,
@@ -221,12 +195,13 @@ export const updateProfile = async (req, res) => {
       error,
     });
   }
-};
+});
 
 // delete account himself user
-export const deleteProfile = async (req, res) => {
+export const deleteProfile = asyncHandler(async (req, res) => {
   try {
     const user = await User.findById(req.user?._id);
+
     console.log(user);
     if (!user) {
       return res.status(400).json({
@@ -234,10 +209,15 @@ export const deleteProfile = async (req, res) => {
         message: "User does not exist",
       });
     }
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+
     await deleteOnCloudinary(user?.profileImage?.public_id);
     await User.findByIdAndDelete(user);
 
-    return res.status(200).json({
+    return res.status(200).clearCookie("token", options).json({
       success: true,
       message: "User deleted successfully",
     });
@@ -248,10 +228,10 @@ export const deleteProfile = async (req, res) => {
       error,
     });
   }
-};
+});
 
 // update profile image
-export const updateProfileImage = async (req, res) => {
+export const updateProfileImage = asyncHandler(async (req, res) => {
   try {
     let user = await User.findById(req.user?._id);
     if (!user) {
@@ -278,12 +258,7 @@ export const updateProfileImage = async (req, res) => {
       },
       { new: true }
     );
-
-    return res.status(200).json({
-      success: true,
-      message: "Profile image updated successfully",
-      user: userUpdate,
-    });
+    sendResponse(res, userUpdate, 200, "Profile image updated successfully");
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -291,16 +266,15 @@ export const updateProfileImage = async (req, res) => {
       message: "Something wrong with update profile image",
     });
   }
-};
+});
 
 // change password
-export const changeCurrentPassword = async (req, res) => {
+export const changeCurrentPassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword } = req.body;
 
   const user = await User.findById(req.user?._id);
   // const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
   const isPasswordCorrect = bcryptjs.compareSync(oldPassword, user.password);
-  console.log("user :", user);
 
   if (!isPasswordCorrect) {
     res.status(400).json({
@@ -308,18 +282,15 @@ export const changeCurrentPassword = async (req, res) => {
       message: "Password incorrect!",
     });
   }
-
-  user.password = newPassword;
+  const hashPassword = bcryptjs.hashSync(newPassword, 8);
+  user.password = hashPassword;
   await user.save({ validateBeforeSave: false });
 
-  res.status(200).json({
-    success: true,
-    message: "Password changed successfully",
-  });
-};
+  sendResponse(res, user, 200, "Password changed successfully");
+});
 
 // delete user account by admin
-export const deleteUserAccount = async (req, res) => {
+export const deleteUserAccount = asyncHandler(async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.params.id });
     console.log("user :", user);
@@ -331,10 +302,15 @@ export const deleteUserAccount = async (req, res) => {
       });
     }
 
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+
     await deleteOnCloudinary(user?.profileImage?.public_id);
     const deleteUser = await User.findByIdAndDelete(req.params.id);
 
-    return res.status(200).json({
+    return res.status(200).clearCookie("token", options).json({
       success: true,
       message: "User deleted successfully",
       deleteUser,
@@ -346,10 +322,10 @@ export const deleteUserAccount = async (req, res) => {
       error,
     });
   }
-};
+});
 
 // admin get users
-export const allUsers = async (req, res) => {
+export const allUsers = asyncHandler(async (req, res) => {
   try {
     const users = await User.find();
     if (!users) {
@@ -367,10 +343,10 @@ export const allUsers = async (req, res) => {
       message: "Something wrong with update profile image",
     });
   }
-};
+});
 
 // get user account by id admin
-export const getUserAccountById = async (req, res) => {
+export const getUserAccountById = asyncHandler(async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
 
@@ -393,4 +369,4 @@ export const getUserAccountById = async (req, res) => {
       error,
     });
   }
-};
+});

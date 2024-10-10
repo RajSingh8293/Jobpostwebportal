@@ -2,11 +2,14 @@ import express, { Router } from "express";
 import {
   adminDeleteJobById,
   createJob,
+  createMultipleJobs,
   deleteJobById,
   getAllJobs,
   getJobById,
   getRecruiterJob,
+  deleteMultipleJobs,
   updateLogoJob,
+  updateJob,
 } from "../controllers/job.controllers.js";
 import {
   isAuthenticated,
@@ -20,8 +23,14 @@ const router = Router();
 router.get("/job/get/:id", getJobById);
 router.get("/job/get", getAllJobs);
 
+// insert data
+router.post("/job/create-many", createMultipleJobs);
+router.delete("/job/create-many", deleteMultipleJobs);
+
 // recruiter jobs
+router.put("/job/update/:id", isAuthenticated, recruiterAuth, updateJob);
 router.post("/job/create", isAuthenticated, recruiterAuth, createJob);
+
 router.get(
   "/job/get/recruiter/jobs",
   isAuthenticated,

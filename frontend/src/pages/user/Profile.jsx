@@ -44,7 +44,7 @@ const Profile = () => {
                                     <div className="  grid mx-auto mt-8 ">
                                         <div className=" flex flex-col items-center space-y-5 sm:flex-row sm:space-y-0">
                                             <div className="relative">
-                                                {user && <button className="absolute bottom-0 right-0 w-8 h-8 flex items-center justify-center hover:bg-green-600 bg-[green] rounded-full p-1"
+                                                {user && user?.profileImage?.url && <button className="absolute bottom-0 right-0 w-8 h-8 flex items-center justify-center hover:bg-green-600 bg-[tomato] rounded-full p-1"
                                                     onClick={() => setImageOpen(true)}
                                                 >
                                                     <MdOutlineEdit fontSize={20} color="white" className=" rounded-full " />
@@ -59,14 +59,11 @@ const Profile = () => {
                                                             onClick={() => setImageOpen(true)}
                                                         >
                                                             <CiCamera fontSize={40} className="opacity-50" />
-                                                        </button>}
+                                                        </button>
+                                                    }
                                                 </div>
-
                                             </div>
-
-
                                         </div>
-
 
                                         <div className="relative grid grid-cols-1 gap-4 items-center mt-8 sm:mt-14 text-[#202142]">
 
@@ -78,7 +75,6 @@ const Profile = () => {
                                                 >{user?.username}
                                                 </p>
                                             </div>
-
 
 
                                             <div className="w-full mb-2 grid grid-cols-4 gap-3 items-center">
@@ -95,6 +91,13 @@ const Profile = () => {
                                                 <p id="first_name"
                                                     className="text-indigo-900 col-span-3 text-noraml "
                                                 >{user?.phone}</p>
+                                            </div>}
+                                            {user?.location && <div className="w-full mb-2 grid grid-cols-4 gap-3 items-center">
+                                                <h1
+                                                    className="col-span-1 font-medium text-indigo-900 dark:text-white">Location: </h1>
+                                                <p id="first_name"
+                                                    className="text-indigo-900 col-span-3 text-noraml "
+                                                >{user?.location}</p>
                                             </div>}
                                             {user?.role === "recruiter" && <div className="w-full mb-2 grid grid-cols-4 gap-3 items-center">
                                                 <h1

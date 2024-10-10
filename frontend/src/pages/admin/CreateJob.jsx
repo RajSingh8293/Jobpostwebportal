@@ -4,15 +4,9 @@ import Sidebar from '@/components/comp/Sidebar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import { categoryFilter } from '@/data/filterData'
 
-import { createNewJob } from '@/redux/slices/myJobsSlice'
+import { createNewJob } from '@/redux/slices/recruiterJobsSlice'
 import { data } from 'autoprefixer'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -22,31 +16,33 @@ import { NavLink } from 'react-router-dom'
 
 const CreateJob = () => {
     const dispatch = useDispatch()
+    const [categoryArray, setCategoryArray] = useState(categoryFilter)
     const [jobData, setJobData] = useState({
         title: "",
         company: "",
-        minSalary: "",
-        maxSalary: "",
+        salary: "",
         category: "",
-        minExperience: "",
-        maxExperience: "",
         location: "",
         address: "",
-        companyWebsite: "",
+        city: "",
         skills: "",
-        responsibilities: "",
         description: "",
         jobRole: "",
         maxPositions: "",
         jobType: "",
+        experienceLevel: "",
+        companyWebsite: "",
     })
 
 
+    const JobTypeArray = ["Full-Time", "Part-Time", "Parmanent", "Temparay", "Contract"]
 
-    const categoryArray = ["App Development", "Web Development", "Software Development", "Finance & Accounting", "Medical", "Restaurant", "Hotel"]
-    const JobTypeArray = ["Full Time", "Part Time", "Parmanent", "Temparay", "Contract Base"]
-
-    const experienceArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    const experienceArray = [
+        "Mid-level",
+        "Junior",
+        "Senior",
+        "Entry-level",
+    ]
     const onchangeHandler = (e) => {
         e.preventDefault()
         let name = e.target.name
@@ -74,8 +70,8 @@ const CreateJob = () => {
                             <div className="border-b w-full px-6 pb-8  sm:rounded-lg">
                                 <h2 className="pb-4 text-2xl font-bold sm:text-xl">Create new job</h2>
                                 <div className="">
-                                    <form className='grid grid-cols-1 gap-4 items-center'>
-                                        <div className="mb-2 grid lg:grid-cols-2 grid-cols-1 gap-4">
+                                    <form className='grid grid-cols-1 gap-2 items-center'>
+                                        <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
                                             <div className="">
                                                 <Label>Title</Label>
                                                 <Input type="text" placeholder="Your job title" name="title" className="outline-none" value={jobData.title} onChange={onchangeHandler} />
@@ -85,18 +81,29 @@ const CreateJob = () => {
                                                 <Input type="text" placeholder="Your company name" name="company" className="outline-none" value={jobData.company} onChange={onchangeHandler} />
                                             </div>
                                         </div>
-                                        <div className="mb-2 grid lg:grid-cols-2 grid-cols-1 gap-4">
+
+                                        <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
                                             <div className="">
-                                                <Label>Minimum Salary</Label>
-                                                <Input type="text" placeholder="Minimum salary" name="minSalary" className="outline-none" value={jobData.minSalary} onChange={onchangeHandler} />
+                                                <Label>Location</Label>
+                                                <Input type="text" placeholder="Your location" name="location" classNam="outline-none" value={jobData.location} onChange={onchangeHandler} />
                                             </div>
                                             <div className="">
-                                                <Label>Max Salary</Label>
-                                                <Input type="text" placeholder="Maximum salary" name="maxSalary" className="outline-none" value={jobData.maxSalary} onChange={onchangeHandler} />
+                                                <Label>Address</Label>
+                                                <Input type="text" placeholder="Your address" name="address" classNam="outline-none" value={jobData.address} onChange={onchangeHandler} />
+                                            </div>
+                                        </div>
+                                        <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
+                                            <div className="">
+                                                <Label>City</Label>
+                                                <Input type="text" placeholder="Your City" name="city" classNam="outline-none" value={jobData.city} onChange={onchangeHandler} />
+                                            </div>
+                                            <div className="">
+                                                <Label>Salary</Label>
+                                                <Input type="text" placeholder="Salary" name="salary" className="outline-none" value={jobData.salary} onChange={onchangeHandler} />
                                             </div>
                                         </div>
 
-                                        <div className="mb-2 grid lg:grid-cols-2 grid-cols-1 gap-4">
+                                        <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
                                             <div className="">
                                                 <Label>Category</Label>
                                                 <select
@@ -120,7 +127,7 @@ const CreateJob = () => {
                                             </div>
 
                                         </div>
-                                        <div className="mb-2 grid lg:grid-cols-2 grid-cols-1 gap-4">
+                                        <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
                                             <div className="">
                                                 <Label>Job Role</Label>
                                                 <Input type="text" placeholder="Job role" name="jobRole" className="outline-none" value={jobData.jobRole} onChange={onchangeHandler} />
@@ -144,62 +151,31 @@ const CreateJob = () => {
 
                                         </div>
 
-                                        <div className="mb-2 grid lg:grid-cols-2 grid-cols-1 gap-4">
-                                            <div className="">
-                                                <Label>Location</Label>
-                                                <Input type="text" placeholder="Your location" name="location" classNam="outline-none" value={jobData.location} onChange={onchangeHandler} />
-                                            </div>
-                                            <div className="">
-                                                <Label>Address</Label>
-                                                <Input type="text" placeholder="Your address" name="address" classNam="outline-none" value={jobData.address} onChange={onchangeHandler} />
-                                            </div>
 
-                                        </div>
 
-                                        <div className="mb-2 grid lg:grid-cols-2 grid-cols-1 gap-4">
+                                        <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
                                             <div className="">
-                                                <Label>Minimum Experience</Label>
+                                                <Label>Experience Level</Label>
                                                 <select
                                                     className='w-[100%] border py-2 px-2 text-sm text-gray-500 rounded-md'
-                                                    name='minExperience'
-                                                    value={jobData?.minExperience}
+                                                    name='experienceLevel'
+                                                    value={jobData?.experienceLevel}
                                                     onChange={onchangeHandler}
                                                 >
-                                                    <option value="">Select experience</option>
+                                                    <option value="">Select Experience Level</option>
                                                     {experienceArray?.map((num, index) =>
                                                         <option className='' key={index} value={num}>{num}</option>)}
                                                 </select>
                                             </div>
-                                            <div className="">
-                                                <Label>Maximum Experience</Label>
-                                                <select
-                                                    className='w-[100%] border py-2 px-2 text-sm text-gray-500 rounded-md'
-                                                    name='maxExperience'
-                                                    value={jobData?.maxExperience}
-                                                    onChange={onchangeHandler}
-                                                >
-                                                    <option value="">Select experience</option>
-                                                    {experienceArray?.map((num, index) =>
-                                                        <option className='' key={index} value={num}>{num}</option>)}
-                                                </select>
-                                            </div>
-
-
-                                        </div>
-                                        <div className="mb-2 grid lg:grid-cols-2 grid-cols-1 gap-4">
                                             <div className="">
                                                 <Label>Skills</Label>
                                                 <Input type="text" placeholder="Your skills" name="skills" className="outline-none" value={jobData.skills} onChange={onchangeHandler} />
                                             </div>
-                                            <div className="">
-                                                <Label>Responsbilities</Label>
-                                                <Input type="text" placeholder="Your responsbilities" name="responsibilities" className="outline-none" value={jobData.responsibilities} onChange={onchangeHandler} />
-                                            </div>
                                         </div>
-                                        <div className="mb-2 grid lg:grid-cols-2 grid-cols-1 gap-4">
+                                        <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
                                             <div className="">
                                                 <Label>Description</Label>
-                                                <Input type="text" placeholder="Your skills" name="description" className="outline-none" value={jobData.description} onChange={onchangeHandler} />
+                                                <Input type="text" placeholder="Your Description" name="description" className="outline-none" value={jobData.description} onChange={onchangeHandler} />
                                             </div>
                                             <div className="">
                                                 <Label>Company Website</Label>
@@ -215,7 +191,7 @@ const CreateJob = () => {
                                             <Button type="submit"
                                                 onClick={submitHandler}
                                             >
-                                                Submit
+                                                Create Job
                                             </Button>
                                         </div>
                                     </form>
@@ -228,10 +204,7 @@ const CreateJob = () => {
                             </div>
                         </div>
                     </main>
-
                 </div >
-
-
             </section>
         </Layout>
     )

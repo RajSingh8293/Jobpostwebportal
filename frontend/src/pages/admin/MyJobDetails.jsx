@@ -1,23 +1,16 @@
 
 import Layout from "@/components/comp/Layout"
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react";
-import { CiHeart } from "react-icons/ci";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import UpdateCompanyLogo from "./UpdateCompanyLogo";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMySingleJob } from "@/redux/slices/myJobsSlice";
+import { fetchMySingleJob } from "@/redux/slices/recruiterJobsSlice";
+import BreadCrumb from "@/components/comp/BreadCrumb";
+import { Badge } from "@/components/ui/badge";
 
 
 
@@ -26,10 +19,6 @@ const MyJobDetails = () => {
     const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
     const { mySingleJob: jobDetails } = useSelector((state) => state.myjobs)
-
-    console.log("jobDetails :", jobDetails);
-
-
 
     useEffect(() => {
         window.scroll({
@@ -50,17 +39,7 @@ const MyJobDetails = () => {
                     </div>
                     <div className="px-10 absolute top-24 left-0 flex flex-col gap-5">
                         <h1 className="text-3xl font-semibold">{jobDetails?.title}</h1>
-                        <Breadcrumb>
-                            <BreadcrumbList>
-                                <BreadcrumbItem>
-                                    <BreadcrumbLink href="/myjobs">Home</BreadcrumbLink>
-                                </BreadcrumbItem>
-                                <BreadcrumbSeparator />
-                                <BreadcrumbItem>
-                                    <BreadcrumbPage>Web Developer – PHP</BreadcrumbPage>
-                                </BreadcrumbItem>
-                            </BreadcrumbList>
-                        </Breadcrumb>
+                        <BreadCrumb link='/myjobs' name="Home" title={jobDetails?.title} />
                     </div>
                 </div>
 
@@ -76,30 +55,27 @@ const MyJobDetails = () => {
                             </div>}
 
 
-                            {jobDetails?.responsibilities?.length > 1 ? <div className="pb-10">
-                                <h1 className="py-3 text-3xl font-bold">Responsibilities</h1>
-                                <ul className="list-disc flex flex-col gap-3 pl-5 pt-4">
-                                    {jobDetails?.responsibilities?.map((res, index) =>
-                                        res && <li key={index}>
-                                            {res}
-                                        </li>
+                            <div className="pb-10">
+                                <h1 className="py-3 text-3xl font-bold">Required Skills</h1>
+                                <div className="list-disc flex gap-3  pt-4">
+                                    {jobDetails?.skills?.map((res, index) =>
+                                        res && <p key={index} >
+                                            <Badge >{res}</Badge>
+                                        </p>
                                     )}
-                                </ul>
+                                </div>
                             </div>
-                                :
-                                ""
-                            }
 
 
 
                             <div className="pb-10">
-                                <h1 className="py-3 text-3xl font-bold">Minimum Qualifications</h1>
-                                <ul className="list-disc flex flex-col gap-3 pl-5 pt-4">
-                                    <li>BA/BS degree in a technical field or equivalent practical experience..</li>
-                                    <li>Programming experience in C, C++ or Java.</li>
-                                    <li>Experience with AJAX, HTML and CSS.</li>
-                                    <li>2 years of relevant work experience in software development..</li>
-                                </ul>
+                                <div className="list-disc flex flex-col gap-3 pt-4">
+                                    <div> <strong>Role </strong> : {jobDetails?.jobRole}</div>
+                                    <div> <strong>Industry Type </strong> : {jobDetails?.company}</div>
+                                    <div> <strong>Department </strong> : {jobDetails?.category}</div>
+                                    <div> <strong>Employment Type </strong> : {jobDetails?.jobType}</div>
+                                    <div> <strong>Role Category </strong> : {jobDetails?.category}</div>
+                                </div>
                             </div>
 
                             <div className="pb-10">
@@ -130,7 +106,7 @@ const MyJobDetails = () => {
                                     {jobDetails?.logo?.url !== "" ?
                                         <img className="w-full h-full" src={jobDetails?.logo?.url} alt="" />
                                         :
-                                        <img src="https://marketplace.canva.com/EAE0rNNM2Fg/1/0/1600w/canva-letter-c-trade-marketing-logo-design-template-r9VFYrbB35Y.jpg" alt="" />
+                                        <img className="w-24 h-24 rounded-full" src='/public/job_card_img.jpg' alt="" />
                                     }
                                 </div>
                                 <div>
@@ -142,9 +118,6 @@ const MyJobDetails = () => {
                                     <h1 className="text-blue-500">{jobDetails?.company}</h1>
                                     <p className="flex gap-5">{jobDetails?.title}</p>
                                 </div>}
-                                <span className="absolute top-2 right-2 border p-1.5 rounded-lg hover:bg-[#EF3A3A]">
-                                    <CiHeart className="text-[red] hover:text-white overflow-hidden font-bold " fontSize={20} />
-                                </span>
                             </div>
                         </div>
                         <div className="flex gap-4 flex-col border bg-[#F7F9FD] rounded  p-8">
@@ -179,7 +152,7 @@ const MyJobDetails = () => {
                                     Salary:
                                 </h1>
                                 <h1 className="text-normal opacity-50">
-                                    {jobDetails?.minSalary === "" || jobDetails?.maxSalary === "" ? `${jobDetails?.minSalary} - ${jobDetails?.maxSalary}LPA` : "Not disclosed"}
+                                    {jobDetails?.salary ? `${jobDetails?.salary / 100000}LPA` : "Not disclosed"}
                                 </h1>
                             </div>
                             <div className="flex flex-col">
@@ -196,7 +169,7 @@ const MyJobDetails = () => {
                                     Experience:
                                 </h1>
                                 <h1 className="text-normal opacity-50">
-                                    {jobDetails?.minExperience !== "" || jobDetails?.maxExperience !== "" ? `${jobDetails?.minExperience} - ${jobDetails?.maxExperience} Years Experience` : "0 - 1 Years Experience"}
+                                    {jobDetails?.experienceLevel} Experience
                                 </h1>
                             </div>
                         </div>

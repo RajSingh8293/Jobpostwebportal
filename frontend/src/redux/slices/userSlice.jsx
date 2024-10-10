@@ -238,6 +238,7 @@ export const updateProfileImage = (image) => {
             if (data.success) {
                 dispatch(updateProfileImageSuccess(data));
                 // toast.success(data.message)
+                // document.href.location = '/profile'
             }
         } catch (error) {
             dispatch(updateProfileImageFailed(error?.response?.data?.message))

@@ -28,15 +28,9 @@ const Login = () => {
         setUserData({ ...userData, [name]: value })
     }
 
-    let axiosConfig = {
-        withCredentials: true,
-    }
-
-
     const submitHandler = async (e) => {
         e.preventDefault()
         dispatch(loginUser(userData))
-
     }
 
     useEffect(() => {
@@ -44,10 +38,6 @@ const Login = () => {
             top: 0,
             behavior: "smooth",
         });
-        // if (error) {
-        //     toast.error(error)
-        //     dispatch(clearAllUserErrors())
-        // }
 
         if (isAuthenticated) {
             navigate('/profile')
@@ -79,7 +69,7 @@ const Login = () => {
                                 <Button type="submit" onClick={submitHandler}> Submit</Button>
                             </div>
                             <div className="">
-                                <p>Create a new account  <NavLink className="hover:underline hover:text-blue-500" to='/register'>Register</NavLink></p>
+                                <p>Create a new account  <NavLink className="hover:underline text-blue-500 hover:text-blue-500" to='/register'>Register</NavLink></p>
                             </div>
                         </form>
                     </div>

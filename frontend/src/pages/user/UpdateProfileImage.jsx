@@ -11,9 +11,10 @@ import { Link, useNavigate } from 'react-router-dom'
 const UpdateProfileImage = ({ open, setOpen }) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { user } = useSelector((state) => state.auth)
-    const [loading, setLoading] = useState(false)
-    const [imagePreview, setImagePreview] = useState()
+    const { user, loading } = useSelector((state) => state.auth)
+    // const [loading, setLoading] = useState(false)
+    const [imagePreview, setImagePreview] = useState("")
+    // const [profileImage, setProfileImage] = useState("")
     const [userData, setUserData] = useState({
         profileImage: null
     })
@@ -21,14 +22,9 @@ const UpdateProfileImage = ({ open, setOpen }) => {
     console.log("user :", user);
 
     const onchangeFileHandler = (e) => {
-        setUserData({ ...userData, profileImage: e.target.files?.[0] })
+        setUserData({ ...userData, profileImage: e.target.files[0] })
         setImagePreview(URL.createObjectURL(e.target.files[0]));
     }
-
-
-    // let axiosConfig = {
-    //     withCredentials: true,
-    // }
 
 
     const updateHandler = async (e) => {
@@ -36,8 +32,6 @@ const UpdateProfileImage = ({ open, setOpen }) => {
         const formData = new FormData()
         formData.append("profileImage", userData.profileImage);
         dispatch(updateProfileImage(formData))
-
-
 
         // try {
 
@@ -47,17 +41,17 @@ const UpdateProfileImage = ({ open, setOpen }) => {
         //     setOpen(false)
 
         //     setLoading(true)
-        //     const { data } = await axios.put(
-        //         `${import.meta.env.VITE_REACT_APP_API_BASE_UR}/user/update/profile-image`,
-        //         formData,
-        //         axiosConfig,
-        //     )
-        //     console.log(data?.user);
-        //     if (data.success) {
-        //         dispatch(setUser(data?.user))
-        //         toast.success(data.message)
-        //         navigate('/')
-        //     }
+        // const { data } = await axios.put(
+        //     `${import.meta.env.VITE_REACT_APP_API_BASE_UR}/user/update/profile-image`,
+        //     formData,
+        //     axiosConfig,
+        // )
+        // console.log(data?.user);
+        // if (data.success) {
+        //     dispatch(setUser(data?.user))
+        //     toast.success(data.message)
+        //     navigate('/')
+        // }
         //     setLoading(false)
         // } catch (error) {
         //     console.log(error);

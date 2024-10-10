@@ -1,32 +1,44 @@
 /* eslint-disable react/prop-types */
-import { CiHeart } from "react-icons/ci";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { useState } from "react";
 import ApplyJobBox from "@/pages/user/ApplyJobBox";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Heart } from "lucide-react";
+import { addTowhistList, removeFromWhishList } from "@/redux/slices/wishlistSlice";
+
 
 
 const JobCard = ({ job }) => {
     const [open, setOpen] = useState(false)
-    const saved = false
+    const dispatch = useDispatch()
+    // const saved = true
     const { user, isAuthenticated } = useSelector((state) => state.auth)
+    const { favorateItems } = useSelector((state) => state.whishListItems)
     const isApplied = job?.applications?.some(application => application?.applicant?.userId === user?._id) || false;
 
+    const saved = favorateItems?.find((item) => item._id === job._id)
+
+    const addToWishList = (id) => {
+        dispatch(addTowhistList(id))
+    }
+    const removeToWishList = (id) => {
+        dispatch(removeFromWhishList(id))
+    }
 
     return (
         <>
             <div className="">
-                <div className="shadow p-4 relative">
+                <div className="jobCard shadow cursor-pointer rounded p-4 relative">
                     <div className="flex justify-center items-center flex-col">
                         {job?.logo?.url !== "" ? <img className="w-24 h-24 rounded-full" src={job?.logo?.url} alt="" />
                             :
-                            <img className="w-24 h-24 rounded-full" src="https://marketplace.canva.com/EAE0rNNM2Fg/1/0/1600w/canva-letter-c-trade-marketing-logo-design-template-r9VFYrbB35Y.jpg" alt="" />}
+                            <img className="w-24 h-24 rounded-full" src='/public/job_card_img.jpg' alt="" />}
                     </div>
                     <div className="flex flex-col justify-center items-center gap-1 py-2">
                         <h1 className="text-[#83c0e9] text-xl">
-                            <Link to={`/job/${job?._id}`}>
+                            <Link to={`/job/${job?._id}`} className="hover:text-[tomato]">
                                 {job?.title}
                             </Link>
                         </h1>
@@ -37,7 +49,7 @@ const JobCard = ({ job }) => {
                         </p>
                         <p className=" flex items-center gap-3"><span><FaRegMoneyBillAlt /></span>
                             <span>
-                                {job?.maxSalary || job?.minSalary ? `${job?.maxSalary} - ${job?.minSalary}LPA` : "Not disclosed"}
+                                {job?.salary ? `${job?.salary / 100000} LPA` : "Not disclosed"}
                             </span></p>
                     </div>
 
@@ -74,10 +86,13 @@ const JobCard = ({ job }) => {
 
 
                     <p className="absolute top-4 right-4 overflow-hidden">
-                        {
-                            saved ? <CiHeart className="text-[red]" fontSize={30} /> : <CiHeart className="" fontSize={30} />
-                        }
 
+                        {/* <CiHeart className={`hover:text-[red] ${saved ? `text-[red]` : `text-black`}`} fontSize={30} /> */}
+                        {saved ?
+                            <Heart onClick={() => removeToWishList(job)} className="text-[red]" strokeWidth={1.5} />
+                            :
+                            <Heart onClick={() => addToWishList(job)} className="hover:text-[red] text-black" strokeWidth={1.5} />
+                        }
                     </p>
                     <p className="absolute top-4 left-4 overflow-hidden">
                         <span className="inline-flex items-center rounded-md bg-green-200 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">

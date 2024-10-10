@@ -1,52 +1,79 @@
 import Job from "../models/job.model.js";
 import fs from "fs";
 import { deleteOnCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
-// import data from "../data.json";
+import User from "../models/user.model.js";
+import SavedJob from "../models/saveJob.model.js";
+import { jobsData } from "../data/data.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
-// export const createMultipleJobs = async (req, res) => {
-//   try {
-//     const jobs = await Job.insertMany(data);
-//     if (!jobs) {
-//       res.status(400).json({
-//         message: "Jobs not created",
-//         success: false,
-//       });
-//       return;
-//     }
-//     res.status(201).json({
-//       message: "Jobs is created succefully",
-//       success: true,
-//       jobs,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Something wrong with creating multiple jobs",
-//       error,
-//     });
-//   }
-// };
+export const createMultipleJobs = asyncHandler(async (req, res) => {
+  try {
+    await Job.deleteMany();
+    const jobs = await Job.insertMany(jobsData);
+    if (!jobs) {
+      res.status(400).json({
+        message: "Jobs not created",
+        success: false,
+      });
+      return;
+    }
+    res.status(201).json({
+      message: "Jobs is created succefully",
+      success: true,
+      jobs,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something wrong with creating multiple jobs",
+      error,
+    });
+  }
+});
 
+export const deleteMultipleJobs = asyncHandler(async (req, res) => {
+  try {
+    const jobs = await Job.deleteMany();
+    if (!jobs) {
+      res.status(400).json({
+        message: "Jobs not deleted",
+        success: false,
+      });
+      return;
+    }
+    res.status(201).json({
+      message: "Jobs is deleted succefully",
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something wrong with creating multiple jobs",
+      error,
+    });
+  }
+});
 // create job user
-export const createJob = async (req, res) => {
+export const createJob = asyncHandler(async (req, res) => {
   try {
     const {
       title,
       company,
-      minSalary,
-      maxSalary,
+      salary,
       category,
-      minExperience,
-      maxExperience,
+
       location,
       address,
+      city,
       skills,
-      responsibilities,
+
       companyWebsite,
       description,
       jobRole,
       maxPositions,
+
       jobType,
+      experienceLevel,
     } = req.body;
 
     const user = req.user;
@@ -58,14 +85,12 @@ export const createJob = async (req, res) => {
     const job = await Job.create({
       title,
       company,
-      minSalary: Number(minSalary),
-      maxSalary: Number(maxSalary),
+      salary: Number(salary),
       category,
-      minExperience: Number(minExperience),
-      maxExperience: Number(maxExperience),
       description,
       skills: skills.split(","),
-      responsibilities: responsibilities.split("."),
+      experienceLevel,
+      city,
       location,
       maxPositions: Number(maxPositions),
       address,
@@ -94,64 +119,72 @@ export const createJob = async (req, res) => {
       error,
     });
   }
-};
+});
 
-// get all jobs
-export const getAllJobs = async (req, res) => {
+export const getAllJobs = asyncHandler(async (req, res) => {
   try {
-    const { city, category, searchKeyword } = req.query;
-    // const [city, niche, searchKeyword] = req.query;
+    const {
+      category,
+      city,
+      jobType,
+      experienceLevel,
+      minSalary,
+      maxSalary,
+      skills,
+      page,
+      searchKeyword,
+    } = req.query;
 
-    const query = {};
-    if (city) {
-      query.location = city;
+    const limit = 12;
+    // page = 1,
+    const currentPage = Number(page) || 1;
+    const skip = limit * (currentPage - 1);
+    const filters = {};
+    if (category) filters.category = category;
+    if (city) filters.city = city;
+    if (jobType) filters.jobType = jobType;
+    if (experienceLevel) filters.experienceLevel = experienceLevel;
+    if (minSalary || maxSalary) {
+      filters.salary = {};
+      if (minSalary) filters.salary.$gte = Number(minSalary);
+      if (maxSalary) filters.salary.$lte = Number(maxSalary);
     }
-    // if (location) {
-    //   query.location = location;
-    // }
-    // if (title) {
-    //   query.title = title;
-    // }
-    if (category) {
-      query.category = category;
+    if (skills) {
+      filters.skills = { $all: skills.split(",") };
     }
+
     if (searchKeyword) {
-      query.$or = [
+      filters.$or = [
         { title: { $regex: searchKeyword, $options: "i" } },
         { description: { $regex: searchKeyword, $options: "i" } },
         { company: { $regex: searchKeyword, $options: "i" } },
       ];
     }
 
-    const jobs = await Job.find(query).populate({
-      // const jobs = await Job.find().populate({
+    const jobs = await Job.find(filters).skip(skip).limit(limit).populate({
       path: "applications",
     });
-    if (!jobs) {
-      res.status(400).json({
-        message: "Jobs not found",
-        success: false,
-      });
-      return;
-    }
+    const totalJobs = await Job.countDocuments(filters);
+    // const totalJobs = await Job.countDocuments();
 
     res.status(200).json({
-      message: "Jobs succefully",
-      success: true,
+      totalJobs,
+      totalPages: Math.ceil(totalJobs / limit),
+      currentPage,
+      jobsLength: jobs?.length,
       jobs,
-      count: jobs.length,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Something wrong with getting recruiter jobs",
+      message: "Error fetching jobs",
       error,
     });
   }
-};
+});
 
 // get job by id user
-export const getJobById = async (req, res) => {
+export const getJobById = asyncHandler(async (req, res) => {
   try {
     const job = await Job.findById(req.params.id).populate({
       path: "applications",
@@ -174,20 +207,11 @@ export const getJobById = async (req, res) => {
       message: "Something went wrong",
     });
   }
-};
+});
 
 // update job
-export const updateLogoJob = async (req, res) => {
+export const updateLogoJob = asyncHandler(async (req, res) => {
   try {
-    // const user = req.user;
-    // if (user?.role !== "recruiter") {
-    //   res.status(400).json({
-    //     message: "You dont have permission to update logo",
-    //     success: false,
-    //   });
-    //   return;
-    // }
-
     let job = await Job.findById(req.params.id);
     if (!job) {
       return res.status(400).json({
@@ -221,10 +245,66 @@ export const updateLogoJob = async (req, res) => {
       .status(400)
       .json({ success: false, message: "Error with updating user", error });
   }
-};
+});
+// save data in using heart button
+export const updateJob = asyncHandler(async (req, res) => {
+  const {
+    title,
+    company,
+    salary,
+    category,
+
+    location,
+    address,
+    city,
+    skills,
+
+    companyWebsite,
+    description,
+    jobRole,
+    maxPositions,
+
+    jobType,
+    experienceLevel,
+  } = req.body;
+  try {
+    const user = req.user;
+    const job = await Job.findByIdAndUpdate(
+      req.params.id,
+      {
+        title,
+        company,
+        salary: Number(salary),
+        category,
+        description,
+        skills: skills.split(","),
+        experienceLevel,
+        city,
+        location,
+        maxPositions: Number(maxPositions),
+        address,
+        companyWebsite,
+        jobRole,
+        jobType,
+        createdBy: user._id,
+      },
+      {
+        new: true,
+      }
+    );
+    if (!job) return res.status(404).json({ error: "Job not found" });
+    res.status(200).json({
+      success: true,
+      message: "Job updated successefully",
+      job,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 // delete job by id
-export const deleteJobById = async (req, res) => {
+export const deleteJobById = asyncHandler(async (req, res) => {
   try {
     let job = await Job.findById(req.params.id);
 
@@ -246,23 +326,37 @@ export const deleteJobById = async (req, res) => {
       message: "Something went wrong",
     });
   }
-};
+});
 
 // get all jobs by recruiter
-export const getRecruiterJob = async (req, res) => {
+export const getRecruiterJob = asyncHandler(async (req, res) => {
+  const {
+    category,
+    city,
+    jobType,
+    experienceLevel,
+    minSalary,
+    maxSalary,
+    skills,
+    sortBy,
+    page,
+    searchKeyword,
+    sortOrder,
+  } = req.query;
   try {
+    const limit = 12;
+    const currentPage = Number(page) || 1;
+    const skip = limit * (currentPage - 1);
     const user = req.user;
-    // if (user?.role !== "recruiter") {
-    //   res.status(400).json({
-    //     message: "You dont have permission to get this information",
-    //     success: false,
-    //   });
-    //   return;
-    // }
-    const jobs = await Job.find({ createdBy: user._id }).populate({
-      path: "applications",
-    });
+    const jobs = await Job.find({ createdBy: user._id })
+      .skip(skip)
+      .limit(limit)
+      .populate({
+        path: "applications",
+      });
+
     // const jobs = await Job.find(user._id);
+    const totalJobs = await Job.countDocuments();
     if (!jobs) {
       res.status(400).json({
         message: "Jobs not found",
@@ -275,6 +369,9 @@ export const getRecruiterJob = async (req, res) => {
       message: "Jobs succefully",
       success: true,
       jobs,
+      totalPages: Math.ceil(totalJobs / limit),
+      currentPage,
+      totalJobs,
     });
   } catch (error) {
     res.status(500).json({
@@ -283,11 +380,11 @@ export const getRecruiterJob = async (req, res) => {
       error,
     });
   }
-};
+});
 
 // admin
 // delete job by id
-export const adminDeleteJobById = async (req, res) => {
+export const adminDeleteJobById = asyncHandler(async (req, res) => {
   try {
     let job = await Job.findById(req.params.id);
 
@@ -309,4 +406,46 @@ export const adminDeleteJobById = async (req, res) => {
       message: "Something went wrong",
     });
   }
-};
+});
+
+export const savedJobs = asyncHandler(async (req, res) => {
+  try {
+    const user = req.user;
+    const jobId = await Job.findById(req.params.id);
+    if (!jobId) {
+      return res.status(400).json({
+        success: false,
+        message: "Job not found",
+      });
+    }
+
+    const existingJob = await SavedJob.findOne({
+      userId: user._id,
+      jobId: jobId,
+    });
+
+    if (existingJob) {
+      return res.status(200).json({
+        message: "You have already saved for this job!",
+      });
+    }
+    const jobCanSave = await SavedJob.create({
+      userId: user._id,
+      jobId: jobId,
+    });
+
+    user.savedJobs.push(jobCanSave);
+    const jobsave = await user.save();
+
+    res.status(200).json({
+      success: true,
+      jobsave,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something wrong with getting recruiter jobs",
+      error,
+    });
+  }
+});

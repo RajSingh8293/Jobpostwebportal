@@ -2,6 +2,7 @@ import express, { Router } from "express";
 import {
   allUsers,
   changeCurrentPassword,
+  deleteAllUsers,
   deleteProfile,
   deleteUserAccount,
   getProfile,
@@ -18,6 +19,7 @@ import { upload } from "../middleware/file.middleware.js";
 const router = Router();
 
 // user
+router.delete("/user/delete-all", deleteAllUsers);
 router.post("/user/register", registerUser);
 router.post("/user/login", loginUser);
 router.get("/user/logout", logoutUser);

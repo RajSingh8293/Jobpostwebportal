@@ -1,12 +1,12 @@
 import Application from "../models/Application.js";
 import Job from "../models/job.model.js";
 import User from "../models/user.model.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 // create job  post
-export const applyForJob = async (req, res) => {
+export const applyForJob = asyncHandler(async (req, res) => {
   try {
-    // applicant
     const user = req.user;
     const jobId = req.params.id;
     const { name, email, phone, address } = req.body;
@@ -60,7 +60,7 @@ export const applyForJob = async (req, res) => {
     job.applications.push(jobCanApply._id);
     const jobsave = await job.save();
 
-    console.log("jobsave :", jobsave);
+    // console.log("jobsave :", jobsave);
 
     res.status(201).json({
       message: "Job applied succefully",
@@ -74,76 +74,7 @@ export const applyForJob = async (req, res) => {
       error,
     });
   }
-};
-
-// create job  post
-// export const applyForJob = async (req, res) => {
-//   try {
-//     // const { jobId } = req.body;
-//     const user = req.user;
-//     const jobId = req.params.id;
-
-//     if (!jobId) {
-//       return res.status(422).json({ message: "Job Id is required !" });
-//     }
-
-//     const existingApplication = await Application.findOne({
-//       job: jobId,
-//       applicante: user._id,
-//     });
-
-//     if (existingApplication) {
-//       return res.status(200).json({
-//         message: "You have already applied for this job!",
-//       });
-//     }
-
-//     const job = await Job.findById(jobId);
-//     if (!job) {
-//       return res.status(400).json({
-//         message: "Job not found!",
-//       });
-//     }
-
-//     const finename = req.file?.path;
-
-//     if (!finename) {
-//       return res.status(422).json({ message: "Please choose file!" });
-//     }
-//     const image = await uploadOnCloudinary(finename);
-
-//     console.log("finename :", finename);
-//     console.log("image :", image);
-
-//     const jobCanApply = await Application.create({
-//       job: jobId,
-//       applicante: user._id,
-//       resume: {
-//         public_id: image.public_id,
-//         url: image.secure_url,
-//       },
-//     });
-
-//     console.log("jobCanApply :", jobCanApply);
-
-//     job.applications.push(jobCanApply._id);
-
-//     const jobsave = await job.save();
-//     console.log("jobsave :", jobsave);
-
-//     res.status(201).json({
-//       message: "Job is created succefully",
-//       success: true,
-//       application: jobsave,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Something went wrong",
-//       error,
-//     });
-//   }
-// };
+});
 
 // get jobs by logged in user get
 export const getAppliedMyJobs = async (req, res) => {

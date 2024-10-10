@@ -23,7 +23,9 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import PageNotFound from './pages/user/PageNotFound';
 import { profileUser } from './redux/slices/userSlice';
-
+import WhishList from './pages/user/WhishList';
+import About from './pages/user/About';
+import Contact from './pages/user/Contact';
 
 
 function App() {
@@ -47,8 +49,20 @@ function App() {
       element: <Jobs />,
     },
     {
+      path: "/whishlist",
+      element: <WhishList />,
+    },
+    {
       path: "/register",
       element: <Register />,
+    },
+    {
+      path: "/about",
+      element: <About />,
+    },
+    {
+      path: "/contact",
+      element: <Contact />,
     },
     {
       path: "*",

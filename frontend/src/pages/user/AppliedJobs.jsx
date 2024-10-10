@@ -1,6 +1,6 @@
 import Layout from "@/components/comp/Layout"
 import Sidebar from "@/components/comp/Sidebar"
-import { getMyAppliedJobs } from "@/redux/slices/JobsSlice"
+import { getMyAppliedJobs } from "@/redux/slices/applicationSlice"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
@@ -8,7 +8,7 @@ import { Link } from "react-router-dom"
 const AppliedJobs = () => {
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
-    const { myAppliedJobs: applyJobApplications } = useSelector((state) => state.jobs)
+    const { myAppliedJobs: applyJobApplications } = useSelector((state) => state.applications)
 
     useEffect(() => {
         dispatch(getMyAppliedJobs())
@@ -107,7 +107,7 @@ const AppliedJobs = () => {
                                             </thead>
                                             <tbody>
                                                 <div className="py-16 flex justify-center items-center">
-                                                    <h1 className="text-5xl pb-5 opacity-50">I havent applied any job yet</h1>
+                                                    <h1 className="text-5xl pb-5 opacity-50">You havent applied any job yet</h1>
                                                 </div>
 
                                             </tbody>
